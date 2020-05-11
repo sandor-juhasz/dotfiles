@@ -3,7 +3,10 @@
 # Installs the dotfiles using stow
 ################################################################################
 
-echo "Installing dotfiles..."
+echo "Installing dotfiles with Stow..."
 stow --dotfiles git
-echo "Done"
+echo "Done."
 
+echo "Installing non-stow configurations"
+cd NON-STOW
+./install.sh
