@@ -1,9 +1,10 @@
 #!/bin/bash
 
-for DIR in gnome-terminal gnome-wallpaper; do
+for DIR in gnome-terminal gnome-wallpaper zsh; do
     echo "Configuring ${DIR}"
-    cd "${DIR}"
-    ./install.sh
-    cd ..
+    (
+	cd "${DIR}" || exit
+        ./install.sh
+    )
 done
 
