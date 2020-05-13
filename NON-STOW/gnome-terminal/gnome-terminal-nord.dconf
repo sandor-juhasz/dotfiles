@@ -16,6 +16,7 @@ highlight-colors-set=true
 highlight-foreground-color='rgb(46,52,64)'
 nord-gnome-terminal-version='0.1.0'
 palette=['#3B4252', '#BF616A', '#A3BE8C', '#EBCB8B', '#81A1C1', '#B48EAD', '#88C0D0', '#E5E9F0', '#4C566A', '#BF616A', '#A3BE8C', '#EBCB8B', '#81A1C1', '#B48EAD', '#8FBCBB', '#ECEFF4']
+use-custom-command=true
 use-theme-background=false
 use-theme-colors=false
 use-theme-transparency=false
