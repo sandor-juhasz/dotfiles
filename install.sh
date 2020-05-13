@@ -4,7 +4,7 @@
 ################################################################################
 
 echo "Installing dotfiles with Stow..."
-stow --no-folding emacs git
+stow --no-folding emacs git zsh
 echo "Done."
 
 echo "Installing non-stow configurations"

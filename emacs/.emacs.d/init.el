@@ -30,7 +30,6 @@
 (add-to-list 'load-path "~/.emacs.d/lisp/sanyi")
 (add-to-list 'load-path "~/.emacs.d/lisp/org/")
 
-(server-start)
 (setq inhibit-startup-message t) 
 (setq ring-bell-function 'ignore)
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -47,7 +46,6 @@
 ;; Package management and auto-installation
 ;;
 (require 'package)
-(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 
 (package-initialize)
