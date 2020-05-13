@@ -1,0 +1,8 @@
+-/.git
+-/auto-save-list
+-/elpa
+-/server
+-/lisp
+-projectile.cache
+-projectile-bookmarks.eld
+-*.*~

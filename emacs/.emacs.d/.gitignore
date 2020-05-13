@@ -1,0 +1,15 @@
+#
+# Exclude directories and files which are created at runtime.
+#
+
+auto-save-list/
+elpa/
+eshell/
+server/
+lisp/org
+\#*
+.#*
+*~
+projectile.cache
+projectile-bookmarks.eld
+ido.last

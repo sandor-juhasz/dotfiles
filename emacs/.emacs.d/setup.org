@@ -1,0 +1,176 @@
+* Setting up Emacs
+2015 Sandor Juhasz
+
+** Overview
+This document describes the step-by-step process of setting up a new
+installation of emacs and other external tools to get a fully
+functional Clojure and note taking environment.
+
+** Installation
+
+*** Total Commander
+Use the following command as an external editor to use Emacs when you
+edit files in Total Commander. Please Use the quotation marks,
+otherwise your files will open in Emacs with their old 8.3 DOS
+filenames.
+
+#+BEGIN_EXAMPLE
+"c:\Dev\Apps\emacs-24.4\bin\emacsclientw.exe"  -na "C:\Dev\Apps\emacs-24.4\bin\runemacs.exe"
+#+END_EXAMPLE
+
+*** Java SE 8
+*** wget
+*** leiningen
+Cider requires the `cider-nrepl` plugin and the most recent nrepl.
+To add this to your configuration, edit your ~/.lein/profiles.clj file.
+My version looks like this:
+
+{:user {:plugins [[cider/cider-nrepl "0.9.0-SNAPSHOT"]
+                  [lein-pprint "1.1.2"]]
+        :dependencies [[org.clojure/tools.nrepl "0.2.10"]]}}
+
+As of May 1st 2015, with Leiningen 2.5.1 it is a known issue that if you start 
+cider-jack-in from outside a project, the repl will use the default 0.2.6
+tools.nrepl dependency, no matter what you set in the profiles.clj.
+This will lead to a warning when you start a repl from Emacs. To use the
+most recent version of the nrepl, please invoke cider-jack-in after you
+opened a Clojure project file.
+
+*** git
+My preferred Git plugin is ~magit~. I have bound the Magit status
+screen to ~C-c m m~ as it is a frequently used command and it does not
+have a shortcut by default.
+
+Emacs cannot access the git's built in username / password prompt on
+Windows so you need to set up SSH authentication. See
+https://help.github.com/articles/generating-ssh-keys/ for details
+
+Emacs still cannot seem to see my ssh installation.
+
+*** hunspell
+Download the windows version of hunspell from
+http://sourceforge.net/projects/ezwinports/files/hunspell-1.3.2-3-w32-bin.zip/download
+and extract it under the gnuwin32 directory. For me this is
+c:\dev\apps\gnuwin32. Test the hunspell installation by invoking
+hunspell -D. This command should list all the dictionaries installed
+on your system.
+
+Open the global environment variable dialog and set the LANG variable
+to en_US. 
+
+When invoking ispell from Emacs, you may get the following error:
+"ispell-phaf: No matching entry for nil". This may be caused by a
+wrong default value of the LANG variable. For me Emacs set it to HUN
+which was something huspell could not interpret.
+
+*** org mode
+The configuration requires at least the beta version 8.3 of the org
+mode to enable Clojure Cider support. If your Emacs comes with an
+earlier version of org mode, please download the latest source code
+distribution of org, compile it and copy it under ~/.emacs.d/lisp/org.
+
+To verify your org version, please check C-h v org-version.
+
+*** Dot and PlantUML
+Download the most recent version of Graphviz and install it somewhere
+on your machine. Add the /bin folder to your PATH. Please test that
+the ~dot~ executable is available from anywhere in the command line.
+
+Download the most recent PlantUML distribution which is a Java jar
+file. You can test your runtime settings by calling ~java -jar
+plantuml.jar -help~ to see if the application can be run
+successfully. 
+
+Create the ~GRAPHVIZ_DOT~ environment variable and set the fully
+qualified path to your  ~dot.exe~. Test that the PlantUML can see dot
+by executing ~java -jar plantuml.jar -testdot~.
+
+Image support requires DLLs on Windows which are not distributed with
+the Emacs build (as of 24.4). Installation instructions can be found
+at the main Emacs Windows site at
+https://ftp.gnu.org/gnu/emacs/windows/. First you need to test if your
+Emacs already has PNG and JPEG support. These are the formats which
+are produced by PlantUML. Issue the following commands by pressing
+~C-x C-e~. If they return nil, you do not have support for that file
+type and you need to download the DLL.
+
+#+BEGIN_SRC emacs-lisp
+(image-type-available-p 'jpeg)
+(image-type-available-p 'png)
+#+END_SRC
+
+To see what version of the DLLs your Emacs needs, evaluate the
+#+BEGIN_SRC emacs-lisp
+image-library-alist
+#+END_SRC
+
+#+RESULTS:
+| xpm        | libxpm.dll              | xpm4.dll         | libXpm-nox4.dll |
+| png        | libpng16.dll            | libpng16-16.dll  |                 |
+| tiff       | libtiff-5.dll           | libtiff3.dll     | libtiff.dll     |
+| jpeg       | libjpeg-9.dll           |                  |                 |
+| gif        | libgif-7.dll            |                  |                 |
+| svg        | librsvg-2-2.dll         |                  |                 |
+| gdk-pixbuf | libgdk_pixbuf-2.0-0.dll |                  |                 |
+| glib       | libglib-2.0-0.dll       |                  |                 |
+| gobject    | libgobject-2.0-0.dll    |                  |                 |
+| gnutls     | libgnutls-28.dll        | libgnutls-26.dll |                 |
+| libxml2    | libxml2-2.dll           | libxml2.dll      |                 |
+| zlib       | zlib1.dll               | libz-1.dll       |                 |
+
+LibPNG 1.6.2 can be found at
+http://sourceforge.net/projects/ezwinports/files/libpng-1.6.12-w32-bin.zip/download
+
+LibJPEG 9 can be downloaded from
+http://sourceforge.net/projects/ezwinports/files/jpeg-v9a-w32-bin.zip/download
+
+Extract the DLLs from the downloaded archives and copy them int your
+<EMACS_INSTALL_DIR>/bin directory. Please restart your Emacs and check
+the relevant ~image-type-available-p~ predicates for availability.
+
+Test your PlantUML and dot setup by executing the following
+scripts. You can use C-c C-x C-v to inline the images.
+
+#+BEGIN_SRC plantuml :file hello.png
+class HelloWorld
+#+END_SRC
+
+#+RESULTS:
+[[file:hello.png]]
+
+#+BEGIN_SRC dot :file graph.png
+graph { 
+		a -- b; 
+		b -- c; 
+		a -- c; 
+		d -- c; 
+		e -- c; 
+		e -- a; 
+	} 
+#+END_SRC
+
+#+RESULTS:
+[[file:graph.png]]
+
+For syntax highlighting use the plantuml-mode from MELPA.
+To enable plantuml-mode, please specify the plantuml-jar-path variable
+in your ~init.el~. Otherwise when activating the plantum-mode, the
+initialization code will report a cryptic error message: "Wront type
+argument: stringp, nil"
+
+***** TODO: troubleshoot the plantuml-mode. It starts with an error message.
+
+*** installing the init.el
+
+** Configuration and usage
+
+*** Clojure development with Cider
+
+**** Modes, plugins I use
+- Paredit
+- Rainbow delimiters
+- clojure mode, cider
+- magit
+
+*** Authoring text in org mode
+
