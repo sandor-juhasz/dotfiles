@@ -12,6 +12,9 @@ This document summarizes all the customizations done to the dotfiles.
   - Emacs is started as a daemon using systemd.
   - Window manager shortcut to open a new frame using Emacs Client.
 
+- SSH
+  - Using personal SSH key for Github connections
+
 - tmux
   - Prefix key is set from C-b to ` (backtick)
 
