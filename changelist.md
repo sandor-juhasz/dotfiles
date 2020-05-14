@@ -2,6 +2,10 @@
 
 This document summarizes all the customizations done to the dotfiles.
 
+- Git
+  - Default email and username for public Github projects
+  - Set corporate name and email for projects under ~/work
+
 - Gnome Terminal
   - Scripts to fetch, restore, reset Gnome Terminal settings
   - Nord color schema
