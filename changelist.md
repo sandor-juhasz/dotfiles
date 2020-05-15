@@ -21,6 +21,7 @@ This document summarizes all the customizations done to the dotfiles.
 
 - tmux
   - Prefix key is set from C-b to ` (backtick)
+  - Status bar is set to powerline.
 
 - ZSH
   - Oh-my-Zsh is installed.
