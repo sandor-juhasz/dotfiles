@@ -12,6 +12,10 @@ This document summarizes all the customizations done to the dotfiles.
   - Starting tmux instead of the shell
   - Forwarding F10 to the applications (MC, Emacs)
 
+- GNOME settings
+  - Custom wallpaper
+  - Disabling lock screen and screensaver lock
+
 - GNU Emacs
   - Emacs is started as a daemon using systemd.
   - Window manager shortcut to open a new frame using Emacs Client.
