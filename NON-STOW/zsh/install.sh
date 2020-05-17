@@ -10,6 +10,7 @@ function get_current_shell() {
 if [[ "$(get_current_shell)" != "/usr/bin/zsh" ]]; then
     echo "Current shell is not zsh. Installing oh-my-zsh."
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    rm ~/.zshrc
 else
     echo "Zsh found, doing nothing."
 fi
