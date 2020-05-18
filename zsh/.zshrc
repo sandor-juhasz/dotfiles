@@ -99,3 +99,11 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 alias e='emacsclient'
+
+#
+# Enabling AWS CLI Autocompletion
+#
+if [[ -e /usr/local/bin/aws_completer ]]; then
+    autoload bashcompinit && bashcompinit
+    complete -C '/usr/local/bin/aws_completer' aws
+fi
