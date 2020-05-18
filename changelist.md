@@ -29,5 +29,6 @@ This document summarizes all the customizations done to the dotfiles.
 
 - ZSH
   - Oh-my-Zsh is installed.
+  - AWS CLI Autocomplete is enabled.
   - Aliases
     - 'e <filename>' opens the file using Emacs Client.
