@@ -1,6 +1,0 @@
-[user]
-	email = sandor.juhasz.1983@gmail.com
-	name = sandor-juhasz
-
-[includeIf "gitdir:~/work/"]
-	path = ~/.gitconfig-work
