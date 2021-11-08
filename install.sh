@@ -15,6 +15,6 @@ cd ..
 #
 
 echo "Installing dotfiles with Stow..."
-stow --no-folding emacs ssh tmux zsh
+stow --target "${HOME}" --no-folding emacs ssh tmux zsh
 echo "Done."
 
