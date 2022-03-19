@@ -107,3 +107,9 @@ if [[ -e /usr/local/bin/aws_completer ]]; then
     autoload bashcompinit && bashcompinit
     complete -C '/usr/local/bin/aws_completer' aws
 fi
+
+#
+# Disabling AWS CLI pager
+#
+AWS_PAGER=""
+
