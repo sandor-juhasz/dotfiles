@@ -274,5 +274,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (flycheck yasnippet yaml-mode solarized-theme projectile powerline magit ess use-package imenu-anywhere idomenu elisp-slime-nav rainbow-delimiters plantuml-mode paredit flx-ido flx company cider))))
+   '(flycheck yasnippet yaml-mode solarized-theme projectile powerline magit ess use-package imenu-anywhere idomenu elisp-slime-nav rainbow-delimiters plantuml-mode paredit flx-ido flx company cider)))
