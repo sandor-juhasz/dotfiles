@@ -1,0 +1,41 @@
+#!/bin/bash
+
+function install() {\
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+    if which code; then
+        echo "Installing VSCode plugin..."
+       code --install-extension rust-lang.rust-analyzer --force
+    else
+       echo "Visual Studio code was not found, skipping plugin installation."
+    fi
+}
+
+function uninstall() {
+    echo "Uninstalling Rust..."
+
+    if [[ -d ~/.rustup ]]; then
+        echo "Removing ~/.rustup"
+        rm -r ~/.rustup
+    fi
+
+    if [[ -d ~/.cargo ]]; then
+        echo "Removing ~/.cargo"
+        rm -r ~/.cargo
+    fi    
+
+    if which code; then
+       echo "Removing VSCode plugin"
+       code --uninstall-extension rust-lang.rust-analyzer --force
+    else
+       echo "Visual Studio code was not found, skipping plugin uninstall."
+    fi
+}
+
+if [[ $1 == "install" ]]; then
+    install
+elif [[ $1 == "uninstall" ]]; then
+    uninstall
+else
+    echo "Usage: rust-installer {install|uninstall}"
+fi
