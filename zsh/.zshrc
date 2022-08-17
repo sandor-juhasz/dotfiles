@@ -113,3 +113,9 @@ fi
 #
 AWS_PAGER=""
 
+export GOROOT=/usr/local/go-1.19
+export GOPATH=$HOME/go
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
+export PATH=$PATH:$GOPATH/bin
+
