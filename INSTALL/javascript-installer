@@ -1,32 +1,33 @@
 #!/bin/bash
 
 function install() {
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    echo "Installing NVM..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+    
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+    nvm install --lts
 
     if which code; then
         echo "Installing VSCode plugin..."
-       code --install-extension rust-lang.rust-analyzer --force
+       code --install-extension Swellaby.node-pack --force
     else
        echo "Visual Studio code was not found, skipping plugin installation."
     fi
 }
 
 function uninstall() {
-    echo "Uninstalling Rust..."
+    echo "Uninstalling NVM and all NVM-managed runtimes..."
 
-    if [[ -d ~/.rustup ]]; then
-        echo "Removing ~/.rustup"
-        rm -r ~/.rustup
+    if [[ -d ~/.nvm ]]; then
+        echo "Removing ~/.nvm"
+        rm -rf ~/.nvm
     fi
-
-    if [[ -d ~/.cargo ]]; then
-        echo "Removing ~/.cargo"
-        rm -r ~/.cargo
-    fi    
 
     if which code; then
        echo "Removing VSCode plugin"
-       code --uninstall-extension rust-lang.rust-analyzer --force
+       code --uninstall-extension Swellaby.node-pack --force
     else
        echo "Visual Studio code was not found, skipping plugin uninstall."
     fi
