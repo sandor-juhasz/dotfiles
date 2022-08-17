@@ -1,0 +1,45 @@
+#!/bin/bash
+
+GO_VERSION="1.19"
+GO_INSTALL_ROOT="/usr/local"
+
+#
+# Calculated variables
+#
+
+GO_INSTALL_DIR="${GO_INSTALL_ROOT}/go-${GO_VERSION}"
+GO_SYMLINK_DIR="${GO_INSTALL_ROOT}/go"
+GO_INSTALL_PACKAGE="go${GO_VERSION}.linux-amd64.tar.gz"
+GO_INSTALL_PACKAGE_URL="https://go.dev/dl/${GO_INSTALL_PACKAGE}"
+
+function install() {
+    pushd /tmp || exit
+    wget "${GO_INSTALL_PACKAGE_URL}"
+    tar -xvzf "${GO_INSTALL_PACKAGE}"
+    sudo mv go "${GO_INSTALL_DIR}"
+    sudo ln -s "${GO_INSTALL_DIR}" "${GO_INSTALL_ROOT}/go"
+    rm "${GO_INSTALL_PACKAGE}"
+    popd || exit
+}
+
+function uninstall() {
+    echo "Uninstalling Go..."
+
+    if [[ -L "${GO_SYMLINK_DIR}" ]]; then
+        echo "Removing symlink ${GO_SYMLINK_DIR}"
+        sudo rm "${GO_SYMLINK_DIR}"
+    fi
+
+    if [[ -d "${GO_INSTALL_DIR}" ]]; then
+        echo "Removing install dir ${GO_INSTALL_DIR}"
+        sudo rm -r "${GO_INSTALL_DIR}"
+    fi    
+}
+
+if [[ $1 == "install" ]]; then
+    install
+elif [[ $1 == "uninstall" ]]; then
+    uninstall
+else
+    echo "Usage: go-installer {install|uninstall}"
+fi
