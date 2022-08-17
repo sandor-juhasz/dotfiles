@@ -14,6 +14,8 @@ GO_SYMLINK_DIR="${GO_INSTALL_ROOT}/go"
 GO_INSTALL_PACKAGE="go${GO_VERSION}.linux-amd64.tar.gz"
 GO_INSTALL_PACKAGE_URL="https://go.dev/dl/${GO_INSTALL_PACKAGE}"
 
+VSCODE_EXTENSION="golang.go"
+
 function install() {
     echo "Installing go tools..."
     pushd /tmp || exit
@@ -24,12 +26,7 @@ function install() {
     rm "${GO_INSTALL_PACKAGE}"
     popd || exit
 
-    if which code; then
-        echo "Installing VSCode plugin..."
-       code --install-extension golang.go --force
-    else
-       echo "Visual Studio code was not found, skipping plugin installation."
-    fi
+    install_vscode_extension "${VSCODE_EXTENSION}"
 }
 
 function uninstall() {
@@ -45,13 +42,7 @@ function uninstall() {
         sudo rm -r "${GO_INSTALL_DIR}"
     fi    
 
-    if which code; then
-       echo "Removing VSCode plugin"
-       code --uninstall-extension golang.go --force
-    else
-       echo "Visual Studio code was not found, skipping plugin uninstall."
-    fi
-
+    uninstall_vscode_extension "${VSCODE_EXTENSION}"
 }
 
 main $1

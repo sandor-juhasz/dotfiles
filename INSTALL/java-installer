@@ -24,6 +24,8 @@ MAVEN_SYMLINK_DIR="${MAVEN_INSTALL_ROOT}/maven"
 MAVEN_INSTALL_PACKAGE="apache-maven-${MAVEN_VERSION}-bin.tar.gz"
 MAVEN_INSTALL_PACKAGE_URL="https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
 
+VSCODE_EXTENSION="vscjava.vscode-java-pack"
+
 function install() {
     pushd /tmp || exit
 
@@ -44,12 +46,7 @@ function install() {
 
     popd || exit
 
-    if which code; then
-        echo "Installing VSCode plugin..."
-       code --install-extension vscjava.vscode-java-pack --force
-    else
-       echo "Visual Studio code was not found, skipping plugin installation."
-    fi
+    install_vscode_extension "${VSCODE_EXTENSION}"
 }
 
 function uninstall() {
@@ -76,12 +73,7 @@ function uninstall() {
         sudo rm -r "${MAVEN_INSTALL_DIR}"
     fi    
 
-    if which code; then
-       echo "Removing VSCode plugin"
-       code --uninstall-extension vscjava.vscode-java-pack --force
-    else
-       echo "Visual Studio code was not found, skipping plugin uninstall."
-    fi
+    uninstall_vscode_extension "${VSCODE_EXTENSION}"
 }
 
 main $1

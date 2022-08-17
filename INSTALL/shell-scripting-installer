@@ -2,15 +2,12 @@
 
 source ./common.sh
 
+VSCODE_EXTENSION="timonwong.shellcheck"
+
 function install() {
     sudo apt-get install -y shellcheck
 
-    if which code; then
-        echo "Installing VSCode plugin..."
-       code --install-extension timonwong.shellcheck --force
-    else
-       echo "Visual Studio code was not found, skipping plugin installation."
-    fi
+    install_vscode_extension "${VSCODE_EXTENSION}"
 }
 
 function uninstall() {
@@ -18,12 +15,7 @@ function uninstall() {
 
     sudo apt-get remove -y shellcheck
 
-    if which code; then
-       echo "Removing VSCode plugin"
-       code --uninstall-extension timonwong.shellcheck --force
-    else
-       echo "Visual Studio code was not found, skipping plugin uninstall."
-    fi
+    uninstall_vscode_extension "${VSCODE_EXTENSION}"
 }
 
 main $1

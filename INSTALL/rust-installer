@@ -2,15 +2,12 @@
 
 source ./common.sh
 
+VSCODE_EXTENSION="rust-lang.rust-analyzer"
+
 function install() {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-    if which code; then
-        echo "Installing VSCode plugin..."
-       code --install-extension rust-lang.rust-analyzer --force
-    else
-       echo "Visual Studio code was not found, skipping plugin installation."
-    fi
+    install_vscode_extension "${VSCODE_EXTENSION}"
 }
 
 function uninstall() {
@@ -26,12 +23,7 @@ function uninstall() {
         rm -r ~/.cargo
     fi    
 
-    if which code; then
-       echo "Removing VSCode plugin"
-       code --uninstall-extension rust-lang.rust-analyzer --force
-    else
-       echo "Visual Studio code was not found, skipping plugin uninstall."
-    fi
+    uninstall_vscode_extension "${VSCODE_EXTENSION}"
 }
 
 main $1
