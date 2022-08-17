@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# TODO: add dynamic parsing for version number.
+JAVA_VERSION="18.0.2"
+JAVA_INSTALL_ROOT="/usr/local"
+
+MAVEN_VERSION="3.8.6"
+MAVEN_INSTALL_ROOT="/usr/local"
+
+#
+# Calculated variables
+#
+# https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
+
+JAVA_INSTALL_DIR="${JAVA_INSTALL_ROOT}/openjdk-${JAVA_VERSION}"
+JAVA_SYMLINK_DIR="${JAVA_INSTALL_ROOT}/jdk"
+JAVA_INSTALL_PACKAGE="openjdk-18.0.2_linux-x64_bin.tar.gz"
+JAVA_INSTALL_PACKAGE_URL="https://download.java.net/java/GA/jdk18.0.2/f6ad4b4450fd4d298113270ec84f30ee/9/GPL/openjdk-18.0.2_linux-x64_bin.tar.gz"
+
+MAVEN_INSTALL_DIR="${MAVEN_INSTALL_ROOT}/apache-maven-${MAVEN_VERSION}"
+MAVEN_SYMLINK_DIR="${MAVEN_INSTALL_ROOT}/maven"
+MAVEN_INSTALL_PACKAGE="apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+MAVEN_INSTALL_PACKAGE_URL="https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
+
+function install() {
+    pushd /tmp || exit
+
+    echo "Installing OpenJDK..."
+    wget "${JAVA_INSTALL_PACKAGE_URL}"
+    tar -xvzf "${JAVA_INSTALL_PACKAGE}"
+    sudo mv "jdk-18.0.2" "${JAVA_INSTALL_ROOT}"
+    sudo mv "${JAVA_INSTALL_ROOT}/jdk-18.0.2" "${JAVA_INSTALL_DIR}"
+    sudo ln -s "${JAVA_INSTALL_DIR}" "${JAVA_SYMLINK_DIR}"
+    rm "${JAVA_INSTALL_PACKAGE}"
+
+    echo "Installing Maven..."
+    wget "${MAVEN_INSTALL_PACKAGE_URL}"
+    tar -xvzf "${MAVEN_INSTALL_PACKAGE}"
+    sudo mv "apache-maven-${MAVEN_VERSION}" "${MAVEN_INSTALL_ROOT}"
+    sudo ln -s "${MAVEN_INSTALL_DIR}" "${MAVEN_SYMLINK_DIR}"
+    rm "${MAVEN_INSTALL_PACKAGE}"
+
+    popd || exit
+
+    if which code; then
+        echo "Installing VSCode plugin..."
+       code --install-extension vscjava.vscode-java-pack --force
+    else
+       echo "Visual Studio code was not found, skipping plugin installation."
+    fi
+}
+
+function uninstall() {
+    echo "Uninstalling JDK..."
+
+    if [[ -L "${JAVA_SYMLINK_DIR}" ]]; then
+        echo "Removing symlink ${JAVA_SYMLINK_DIR}"
+        sudo rm "${JAVA_SYMLINK_DIR}"
+    fi
+
+    if [[ -d "${JAVA_INSTALL_DIR}" ]]; then
+        echo "Removing install dir ${JAVA_INSTALL_DIR}"
+        sudo rm -r "${JAVA_INSTALL_DIR}"
+    fi    
+
+    echo "Uninstalling Maven..."
+    if [[ -L "${MAVEN_SYMLINK_DIR}" ]]; then
+        echo "Removing symlink ${MAVEN_SYMLINK_DIR}"
+        sudo rm "${MAVEN_SYMLINK_DIR}"
+    fi
+
+    if [[ -d "${MAVEN_INSTALL_DIR}" ]]; then
+        echo "Removing install dir ${MAVEN_INSTALL_DIR}"
+        sudo rm -r "${MAVEN_INSTALL_DIR}"
+    fi    
+
+    if which code; then
+       echo "Removing VSCode plugin"
+       code --uninstall-extension vscjava.vscode-java-pack --force
+    else
+       echo "Visual Studio code was not found, skipping plugin uninstall."
+    fi
+}
+
+if [[ $1 == "install" ]]; then
+    install
+elif [[ $1 == "uninstall" ]]; then
+    uninstall
+else
+    echo "Usage: java-installer {install|uninstall}"
+fi
