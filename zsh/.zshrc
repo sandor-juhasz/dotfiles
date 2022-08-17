@@ -127,6 +127,6 @@ export NVM_DIR="$HOME/.nvm"
 #
 # Java environment variable settings
 #
-export JAVA_HOME=/usr/local/jdk-18.0.2
+export JAVA_HOME=/usr/local/jdk
 export PATH=$PATH:$JAVA_HOME/bin
-export PATH=$PATH:/usr/local/apache-maven-3.8.6/bin
+export PATH=$PATH:/usr/local/maven/bin
