@@ -1,3 +1,5 @@
+# shellcheck shell=bash
+
 function main() {
     if [[ $1 == "install" ]]; then
         install
