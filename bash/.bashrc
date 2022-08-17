@@ -121,7 +121,6 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 export PATH=$PATH:$GOPATH/bin
 
-. "$HOME/.cargo/env"
 export JAVA_HOME=/usr/local/jdk-18.0.2
 export PATH=/home/sanyi/.nvm/versions/node/v16.17.0/bin:/home/sanyi/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/usr/local/go-1.19/bin:/home/sanyi/go/bin:/usr/local/jdk-18.0.2/bin:/usr/local/jdk-18.0.2/bin
 export PATH=/home/sanyi/.nvm/versions/node/v16.17.0/bin:/home/sanyi/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/usr/local/go-1.19/bin:/home/sanyi/go/bin:/usr/local/jdk-18.0.2/bin:/usr/local/jdk-18.0.2/bin:/usr/local/apache-maven-3.8.6/bin:/usr/local/apache-maven-3.8.6/bin

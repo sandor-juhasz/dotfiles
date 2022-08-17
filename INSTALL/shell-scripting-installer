@@ -1,0 +1,33 @@
+#!/bin/bash
+
+function install() {
+    sudo apt-get install -y shellcheck
+
+    if which code; then
+        echo "Installing VSCode plugin..."
+       code --install-extension timonwong.shellcheck --force
+    else
+       echo "Visual Studio code was not found, skipping plugin installation."
+    fi
+}
+
+function uninstall() {
+    echo "Uninstalling shellcheck..."
+
+    sudo apt-get remove -y shellcheck
+
+    if which code; then
+       echo "Removing VSCode plugin"
+       code --uninstall-extension timonwong.shellcheck --force
+    else
+       echo "Visual Studio code was not found, skipping plugin uninstall."
+    fi
+}
+
+if [[ $1 == "install" ]]; then
+    install
+elif [[ $1 == "uninstall" ]]; then
+    uninstall
+else
+    echo "Usage: shell-scripting-installer {install|uninstall}"
+fi
