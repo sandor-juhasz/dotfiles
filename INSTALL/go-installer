@@ -20,6 +20,13 @@ function install() {
     sudo ln -s "${GO_INSTALL_DIR}" "${GO_INSTALL_ROOT}/go"
     rm "${GO_INSTALL_PACKAGE}"
     popd || exit
+
+    if which code; then
+        echo "Installing VSCode plugin..."
+       code --install-extension golang.go --force
+    else
+       echo "Visual Studio code was not found, skipping plugin installation."
+    fi
 }
 
 function uninstall() {
@@ -34,6 +41,14 @@ function uninstall() {
         echo "Removing install dir ${GO_INSTALL_DIR}"
         sudo rm -r "${GO_INSTALL_DIR}"
     fi    
+
+    if which code; then
+       echo "Removing VSCode plugin"
+       code --uninstall-extension golang.go --force
+    else
+       echo "Visual Studio code was not found, skipping plugin uninstall."
+    fi
+
 }
 
 if [[ $1 == "install" ]]; then
