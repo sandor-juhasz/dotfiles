@@ -119,3 +119,9 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 export PATH=$PATH:$GOPATH/bin
 
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export JAVA_HOME=/usr/local/jdk-18.0.2
+export PATH=/home/sanyi/.nvm/versions/node/v16.17.0/bin:/home/sanyi/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/usr/local/go-1.19/bin:/home/sanyi/go/bin:/usr/local/jdk-18.0.2/bin:/usr/local/jdk-18.0.2/bin
