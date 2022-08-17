@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./common.sh
+
 PACKAGES="curl emacs git htop mc ncdu powerline stow tmux vim-gtk3 zsh"
 
 function install() {
@@ -10,10 +12,4 @@ function uninstall() {
     sudo apt-get -y remove ${PACKAGES}
 }
 
-if [[ $1 == "install" ]]; then
-    install
-elif [[ $1 == "uninstall" ]]; then
-    uninstall
-else
-    echo "Usage: utilities-installer {install|uninstall}"
-fi
+main $1

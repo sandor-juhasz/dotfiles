@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./common.sh
+
 # TODO: add dynamic parsing for version number.
 JAVA_VERSION="18.0.2"
 JAVA_INSTALL_ROOT="/usr/local"
@@ -82,10 +84,4 @@ function uninstall() {
     fi
 }
 
-if [[ $1 == "install" ]]; then
-    install
-elif [[ $1 == "uninstall" ]]; then
-    uninstall
-else
-    echo "Usage: java-installer {install|uninstall}"
-fi
+main $1

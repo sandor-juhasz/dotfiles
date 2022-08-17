@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./common.sh
+
 function install() {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
@@ -32,10 +34,4 @@ function uninstall() {
     fi
 }
 
-if [[ $1 == "install" ]]; then
-    install
-elif [[ $1 == "uninstall" ]]; then
-    uninstall
-else
-    echo "Usage: rust-installer {install|uninstall}"
-fi
+main $1

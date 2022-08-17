@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ./common.sh
+
 function install() {
     sudo apt-get install -y shellcheck
 
@@ -24,10 +26,4 @@ function uninstall() {
     fi
 }
 
-if [[ $1 == "install" ]]; then
-    install
-elif [[ $1 == "uninstall" ]]; then
-    uninstall
-else
-    echo "Usage: shell-scripting-installer {install|uninstall}"
-fi
+main $1
