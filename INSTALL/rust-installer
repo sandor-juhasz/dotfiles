@@ -13,15 +13,7 @@ function install() {
 function uninstall() {
     echo "Uninstalling Rust..."
 
-    if [[ -d ~/.rustup ]]; then
-        echo "Removing ~/.rustup"
-        rm -r ~/.rustup
-    fi
-
-    if [[ -d ~/.cargo ]]; then
-        echo "Removing ~/.cargo"
-        rm -r ~/.cargo
-    fi    
+    rustup self uninstall
 
     uninstall_vscode_extension "${VSCODE_EXTENSION}"
 }
