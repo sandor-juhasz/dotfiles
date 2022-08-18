@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./common.sh
+source "${BASH_SOURCE%/*}/common.sh"
 
 VSCODE_EXTENSION="ms-azuretools.vscode-docker"
 
@@ -30,7 +30,7 @@ function install() {
     sudo docker run hello-world
 
     # Adding the current user to the docker group
-    sudo usermod -a -G docker "${USER}"
+    sudo exeusermod -a -G docker "${USER}"
 
     install_vscode_extension "${VSCODE_EXTENSION}"
     

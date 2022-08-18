@@ -3,6 +3,9 @@
 # Installs the dotfiles using stow
 ################################################################################
 
+echo "Installing utilities"
+./INSTALL/utilities-installer install
+
 echo "Installing non-stow configurations"
 cd NON-STOW
 ./install.sh
@@ -15,6 +18,11 @@ cd ..
 #
 
 echo "Installing dotfiles with Stow..."
+
+if [[ ! -L ~/.bashrc ]]; then
+    mv ~/.bashrc ~/.bashrc.old
+fi
+
 stow --target "${HOME}" --no-folding bash emacs ssh tmux zsh X shell-common
 echo "Done."
 

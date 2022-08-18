@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ./common.sh
+source "${BASH_SOURCE%/*}/common.sh"
 
 # TODO: add dynamic parsing for version number.
 JAVA_VERSION="18.0.2"

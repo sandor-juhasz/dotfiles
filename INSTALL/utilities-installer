@@ -8,7 +8,7 @@
 # platform but can be used by all of them.
 #
 
-source ./common.sh
+source "${BASH_SOURCE%/*}/common.sh"
 
 PACKAGES="curl emacs git htop mc ncdu powerline stow tmux vim-gtk3 zsh"
 
