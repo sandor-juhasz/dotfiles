@@ -1,0 +1,20 @@
+#!/bin/bash
+
+source ./common.sh
+
+VSCODE_EXTENSION="rust-lang.rust-analyzer"
+
+function install() {
+    echo "Installing k3s..."
+    curl -sfL https://get.k3s.io | sudo sh -
+}
+
+function uninstall() {
+    echo "Uninstalling K3s..."
+
+    sudo k3s-uninstall.sh
+
+    uninstall_vscode_extension "${VSCODE_EXTENSION}"
+}
+
+main $1
