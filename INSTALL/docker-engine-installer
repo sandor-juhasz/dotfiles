@@ -1,0 +1,45 @@
+#!/bin/bash
+
+source ./common.sh
+
+function install() {
+    # Installation steps are added from https://docs.docker.com/engine/install/ubuntu/
+
+    # Removing previous versions of Docker
+    sudo apt-get remove docker docker-engine docker.io containerd runc
+    
+    # Installing prerequisites
+    sudo apt-get update   
+    sudo apt-get -y install ca-certificates curl gnupg lsb-release
+
+    # Installing Docker's official GPG key
+    sudo mkdir -p /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+    # Setting up the repository
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    # Installing docker engine
+    sudo apt-get update
+    sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin        
+
+    # Testing the installation
+    sudo docker run hello-world
+    
+    # Adding the current user to the docker group
+    usermod -a -g docker "${USER}"
+
+    echo "You will need to log out and log in to use Docker."
+}
+
+function uninstall() {
+    echo "Uninstalling Docker Engine..."
+    sudo service docker stop
+    sudo apt-get -y remove docker-ce docker-ce-cli containerd.io docker-compose-plugin            
+    sudo rm /etc/apt/sources.list.d/docker.list
+    sudo rm /etc/apt/keyrings/docker.gpg    
+    sudo apt-get update
+}
+
+main $1
