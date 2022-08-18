@@ -2,6 +2,8 @@
 
 source ./common.sh
 
+VSCODE_EXTENSION="ms-azuretools.vscode-docker"
+
 function install() {
     # Installation steps are added from https://docs.docker.com/engine/install/ubuntu/
 
@@ -26,10 +28,12 @@ function install() {
 
     # Testing the installation
     sudo docker run hello-world
-    
+
     # Adding the current user to the docker group
     usermod -a -g docker "${USER}"
 
+    install_vscode_extension "${VSCODE_EXTENSION}"
+    
     echo "You will need to log out and log in to use Docker."
 }
 
@@ -40,6 +44,9 @@ function uninstall() {
     sudo rm /etc/apt/sources.list.d/docker.list
     sudo rm /etc/apt/keyrings/docker.gpg    
     sudo apt-get update
+
+    uninstall_vscode_extension "${VSCODE_EXTENSION}"
+
 }
 
 main $1
