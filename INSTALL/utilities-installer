@@ -10,44 +10,35 @@
 
 source "${BASH_SOURCE%/*}/common.sh"
 
-PACKAGES="curl emacs git htop mc ncdu powerline stow tmux vim-gtk3 zsh"
+PACKAGES="code curl emacs git htop mc ncdu powerline stow tmux vim-gtk3 zsh"
 
-function install_vscode() {
+function install() {
     # Installation steps are added from https://www.terraform.io/downloads
 
     # Installing prerequisites
-    sudo apt-get update   
     sudo apt-get -y install ca-certificates curl gnupg lsb-release
 
-    # Installing Docker's official GPG key
-    sudo mkdir -p /etc/apt/keyrings
-    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /etc/apt/keyrings/packages.microsoft.gpg
+    # Installing Microsoft's official GPG key
+    if [[ ! -e /etc/apt/keyrings/packages.microsoft.gpg ]]; then
+        sudo mkdir -p /etc/apt/keyrings
+        curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /etc/apt/keyrings/packages.microsoft.gpg
+    fi
 
     # Setting up the repository
-    echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+    if [[ ! -e /etc/apt/sources.list.d/vscode.list ]]; then
+        echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+    fi
 
-    # Installing Terraform
     sudo apt-get update 
-    sudo apt-get -y install code
-}
-
-function uninstall_vscode() {
-    echo "Uninstalling Visual Studio Code..."
-    sudo apt-get -y remove code
-    sudo rm /etc/apt/sources.list.d/vscode.list
-    sudo rm /etc/apt/keyrings/packages.microsoft.gpg
-    sudo apt-get update
-}
-
-
-function install() {
     sudo apt-get -y install ${PACKAGES}
-    install_vscode
 }
 
 function uninstall() {
     sudo apt-get -y remove ${PACKAGES}
-    uninstall vscode
+
+    sudo rm /etc/apt/sources.list.d/vscode.list
+    sudo rm /etc/apt/keyrings/packages.microsoft.gpg
+    sudo apt-get update
 }
 
 main $1
