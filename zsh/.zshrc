@@ -113,20 +113,27 @@ fi
 #
 AWS_PAGER=""
 
-export GOROOT=/usr/local/go
-export GOPATH=$HOME/go
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
-export PATH=$PATH:$GOPATH/bin
-
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-#
-# Java environment variable settings
-#
-export JAVA_HOME=/usr/local/jdk
-export PATH=$PATH:$JAVA_HOME/bin
-export PATH=$PATH:/usr/local/maven/bin
+function source-envd {
+  setopt extended_glob
+
+  # glob search for the zshrc.d dir
+  local envd=~/.config/env.d
+  
+  if [[ ! -d "$envd" ]]; then
+    mkdir -p $envd
+  fi
+
+  # source files in zshrc.d in order
+  local conf_files=("$envd"/*.sh(N))
+  local f
+  for f in ${(o)conf_files}; do
+    # ignore files that begin with a tilde
+    case ${f:t} in '~'*) continue;; esac
+    source "$f"
+  done
+}
+source-envd
