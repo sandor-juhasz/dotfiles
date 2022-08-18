@@ -27,6 +27,16 @@ function install() {
     popd || exit
 
     install_vscode_extension "${VSCODE_EXTENSION}"
+
+    mkdir -p ~/.config/env.d
+    cat <<EOF >~/.config/env.d/go.sh
+export GOROOT=${GO_SYMLINK_DIR}
+export GOPATH=\$HOME/go
+export GOBIN=\$GOPATH/bin
+export PATH=\$PATH:\$GOROOT/bin
+export PATH=\$PATH:\$GOPATH/bin
+EOF
+
 }
 
 function uninstall() {
@@ -41,6 +51,10 @@ function uninstall() {
         echo "Removing install dir ${GO_INSTALL_DIR}"
         sudo rm -r "${GO_INSTALL_DIR}"
     fi    
+
+    if [[ -e ~/.config/env.d/go.sh ]]; then
+        rm ~/.config/env.d/go.sh
+    fi
 
     uninstall_vscode_extension "${VSCODE_EXTENSION}"
 }

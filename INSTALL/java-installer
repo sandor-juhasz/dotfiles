@@ -47,6 +47,14 @@ function install() {
     popd || exit
 
     install_vscode_extension "${VSCODE_EXTENSION}"
+
+    mkdir -p ~/.config/env.d
+    cat <<EOF >~/.config/env.d/java.sh
+export JAVA_HOME=${JAVA_SYMLINK_DIR}
+export PATH=\$PATH:/usr/local/jdk/bin
+export PATH=\$PATH:/usr/local/maven/bin
+EOF
+
 }
 
 function uninstall() {
@@ -71,7 +79,12 @@ function uninstall() {
     if [[ -d "${MAVEN_INSTALL_DIR}" ]]; then
         echo "Removing install dir ${MAVEN_INSTALL_DIR}"
         sudo rm -r "${MAVEN_INSTALL_DIR}"
-    fi    
+    fi
+
+    if [[ -e ~/.config/env.d/java.sh ]]; then
+        echo "Deleting ~/config/env.d/java.sh"
+        rm ~/.config/env.d/java.sh
+    fi
 
     uninstall_vscode_extension "${VSCODE_EXTENSION}"
 }
