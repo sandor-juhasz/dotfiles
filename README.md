@@ -11,7 +11,7 @@ This project contains the dotfiles I use on various Ubuntu environments.
 
 ## Install locally under ~/projects/dotfiles
 
-   This installation method requires that the current user is member has `sudo` access.
+   This installation method requires that the current user has `sudo` access.
 
    ```bash
    curl https://raw.githubusercontent.com/sandor-juhasz/dotfiles/master/install-local.sh | bash -s
