@@ -32,7 +32,7 @@ function install_vscode() {
 }
 
 function uninstall_vscode() {
-    echo "Uninstalling Terraform..."
+    echo "Uninstalling Visual Studio Code..."
     sudo apt-get -y remove code
     sudo rm /etc/apt/sources.list.d/vscode.list
     sudo rm /etc/apt/keyrings/packages.microsoft.gpg
