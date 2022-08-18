@@ -4,12 +4,13 @@
 # Returns the default shell for the current user.
 ##########################################################
 function get_current_shell() {
-    grep "^${USER}" /etc/passwd | cut -d : -f 7
+    grep "^${USER}:" /etc/passwd | cut -d : -f 7
 }
 
 echo "Changing the shell.."
 if [[ "$(get_current_shell)" != "/usr/bin/zsh" ]]; then
-    chsh /usr/bin/zsh
+    echo "Changing the default shell to ZSH. Please enter your password when prompted."
+    chsh "${USER}" -s /usr/bin/zsh
 else
     echo "Current shell is ZSH, doing nothing."
 fi
