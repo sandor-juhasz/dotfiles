@@ -36,6 +36,14 @@ function install() {
     rm kubens_v0.9.4_linux_x86_64.tar.gz
 
     popd || exit
+
+    # 
+    # Installing Helm
+    #
+    curl -fsSL https://baltocdn.com/helm/signing.asc | sudo gpg --dearmor -o /etc/apt/keyrings/helm.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+    sudo apt update
+    sudo apt install helm
 }
 
 function uninstall() {
@@ -58,6 +66,13 @@ function uninstall() {
     #
     rm ~/.local/bin/kubectx
     rm ~/.local/bin/kubens
+
+    #
+    # Uninstalling Helm    
+    #
+    sudo apt -y remove helm
+    sudo rm /etc/apt/sources.list.d/helm-stable-debian.list
+    sudo rm /etc/apt/keyrings/helm.gpg        
 }
 
 main $1
