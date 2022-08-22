@@ -137,3 +137,26 @@ function source-envd {
   done
 }
 source-envd
+
+function source-zshrcd {
+  setopt extended_glob
+
+  # glob search for the zshrc.d dir
+  local zshrcd=~/.config/zshrc.d
+  
+  if [[ ! -d "$zshrcd" ]]; then
+    mkdir -p $zshrcd
+  fi
+
+  # source files in zshrc.d in order
+  local conf_files=("$zshrcd"/*.sh(N))
+  local f
+  for f in ${(o)conf_files}; do
+    # ignore files that begin with a tilde
+    case ${f:t} in '~'*) continue;; esac
+    source "$f"
+  done
+}
+source-zshrcd
+
+export PATH=$PATH:~/.local/bin

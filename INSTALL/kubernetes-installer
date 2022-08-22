@@ -2,19 +2,62 @@
 
 source "${BASH_SOURCE%/*}/common.sh"
 
-VSCODE_EXTENSION="rust-lang.rust-analyzer"
-
 function install() {
     echo "Installing k3s..."
     curl -sfL https://get.k3s.io | sudo sh -
+
+    # 
+    # Installing kubectl
+    #
+    sudo curl -fsSLo /etc/apt/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    sudo apt update
+    sudo apt install -y kubectl
+
+    # Installing kubectl autocomplete
+    mkdir ~/.config/bashrc.d
+    echo "source <(kubectl completion bash)" >~/.config/bashrc.d/kubernetes.sh
+    mkdir ~/.config/zshrc.d
+    echo "source <(kubectl completion zsh)" >~/.config/zshrc.d/kubernetes.sh
+
+    #
+    # Installing kubectx and kubens
+    #
+    pushd /tmp || exit
+    mkdir -p ~/.local/bin
+    wget https://github.com/ahmetb/kubectx/releases/download/v0.9.4/kubectx_v0.9.4_linux_x86_64.tar.gz
+    tar xvzf kubectx_v0.9.4_linux_x86_64.tar.gz
+    mv kubectx ~/.local/bin
+    rm kubectx_v0.9.4_linux_x86_64.tar.gz
+
+    wget https://github.com/ahmetb/kubectx/releases/download/v0.9.4/kubens_v0.9.4_linux_x86_64.tar.gz
+    tar xvzf kubens_v0.9.4_linux_x86_64.tar.gz
+    mv kubens ~/.local/bin
+    rm kubens_v0.9.4_linux_x86_64.tar.gz
+
+    popd || exit
 }
 
 function uninstall() {
     echo "Uninstalling K3s..."
-
     sudo k3s-uninstall.sh
 
-    uninstall_vscode_extension "${VSCODE_EXTENSION}"
+    # Uninstalling kubectl autocomplete
+    rm ~/.config/bashrc.d/kubernetes.sh
+    rm ~/.config/zshrc.d/kubernetes.sh
+
+    #
+    # Uninstalling kubectl
+    #
+    sudo apt -y remove kubectl
+    sudo rm /etc/apt/sources.list.d/kubernetes.list
+    sudo rm /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+
+    #
+    # Removing kubectx and kubens
+    #
+    rm ~/.local/bin/kubectx
+    rm ~/.local/bin/kubens
 }
 
 main $1

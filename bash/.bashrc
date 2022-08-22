@@ -126,3 +126,14 @@ for file in ~/.config/env.d/*.sh; do
     source "${file}"
 done
 
+#
+# Include *.sh files from ~/.config/bashrc.d
+#
+if [[ ! -d ~/.config/bashrc.d ]]; then
+    mkdir -p ~/.config/bashrc.d
+fi
+for file in ~/.config/bashrc.d/*.sh; do
+    source "${file}"
+done
+
+export PATH=$PATH:~/.local/bin
