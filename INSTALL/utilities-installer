@@ -10,35 +10,47 @@
 
 source "${BASH_SOURCE%/*}/common.sh"
 
-PACKAGES="code curl emacs git htop mc ncdu powerline stow tmux vim-gtk3 zsh"
+PACKAGES="curl emacs git htop mc ncdu powerline stow tmux vim-gtk3 zsh"
 
 function install() {
     # Installation steps are added from https://www.terraform.io/downloads
 
     # Installing prerequisites
-    sudo apt-get -y install ca-certificates curl gnupg lsb-release
+    sudo apt -y install ca-certificates curl gnupg lsb-release
+    sudo apt update 
+    sudo apt -y install ${PACKAGES}
 
-    # Installing Microsoft's official GPG key
-    if [[ ! -e /etc/apt/keyrings/packages.microsoft.gpg ]]; then
-        sudo mkdir -p /etc/apt/keyrings
-        curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /etc/apt/keyrings/packages.microsoft.gpg
+    if grep -q Microsoft /proc/version; then
+        echo "VSCode should not be installed in the WSL distro. Skipping this step..."
+    else
+        echo "Not WSL distro, installing VSCode."
+        # Installing Microsoft's official GPG key
+        if [[ ! -e /etc/apt/keyrings/packages.microsoft.gpg ]]; then
+            sudo mkdir -p /etc/apt/keyrings
+            curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /etc/apt/keyrings/packages.microsoft.gpg
+        fi
+
+        # Setting up the repository
+        if [[ ! -e /etc/apt/sources.list.d/vscode.list ]]; then
+            echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+        fi
+
+        sudo apt update
+        sudo apt -y install code
     fi
-
-    # Setting up the repository
-    if [[ ! -e /etc/apt/sources.list.d/vscode.list ]]; then
-        echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
-    fi
-
-    sudo apt-get update 
-    sudo apt-get -y install ${PACKAGES}
 }
 
 function uninstall() {
-    sudo apt-get -y remove ${PACKAGES}
+    sudo apt -y remove ${PACKAGES}
 
-    sudo rm /etc/apt/sources.list.d/vscode.list
-    sudo rm /etc/apt/keyrings/packages.microsoft.gpg
-    sudo apt-get update
+    if grep -q Microsoft /proc/version; then
+        echo "VSCode should not be installed in the WSL distro. Doing nothing..."
+    else
+        sudo apt remove code
+        sudo rm /etc/apt/sources.list.d/vscode.list
+        sudo rm /etc/apt/keyrings/packages.microsoft.gpg
+        sudo apt update
+    fi
 }
 
 main $1
