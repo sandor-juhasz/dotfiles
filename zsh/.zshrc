@@ -160,3 +160,12 @@ function source-zshrcd {
 source-zshrcd
 
 export PATH=$PATH:~/.local/bin
+
+#
+# Aliases
+#
+alias ll='exa -alF'
+alias la='exa -a'
+alias l='exa -F'
+alias ls='exa -F'
+

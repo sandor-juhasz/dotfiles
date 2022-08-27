@@ -10,7 +10,7 @@
 
 source "${BASH_SOURCE%/*}/common.sh"
 
-PACKAGES="curl emacs git htop mc ncdu powerline stow tmux vim-gtk3 zsh"
+PACKAGES="curl emacs exa git htop mc ncdu powerline stow tmux vim-gtk3 zsh"
 
 function install() {
     # Installation steps are added from https://www.terraform.io/downloads
