@@ -1,3 +1,7 @@
+" Enabling auto-indent
+filetype plugin indent on
+filetype indent on
+
 " Disable Arrow keys in Normal mode
 map <up> <nop>
 map <down> <nop>
