@@ -137,8 +137,8 @@ export PATH=$PATH:~/.local/bin
 #
 # Aliases
 #
-alias ll='exa -alF'
-alias la='exa -aF'
-alias l='exa -F'
-alias ls='exa -F'
-alias tree='exa --tree'
+alias ll='exa -alF --group-directories-first'
+alias la='exa -aF --group-directories-first'
+alias l='exa -F --group-directories-first'
+alias ls='exa -F --group-directories-first'
+alias tree='exa --tree --group-directories-first'
