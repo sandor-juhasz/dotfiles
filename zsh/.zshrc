@@ -165,7 +165,7 @@ export PATH=$PATH:~/.local/bin
 # Aliases
 #
 alias ll='exa -alF'
-alias la='exa -a'
+alias la='exa -aF'
 alias l='exa -F'
 alias ls='exa -F'
-
+alias tree='exa --tree'
