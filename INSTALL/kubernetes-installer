@@ -25,6 +25,8 @@ function install_minikube() {
     sudo chmod 755 /usr/local/bin/minikube
     popd || exit
 
+    mkdir -p ~/.config/bashrc.d
+    mkdir -p ~/.config/zshrc.d
     echo "source <(minikube completion zsh)" >~/.config/zshrc.d/minikube_completion.sh
     echo "source <(minikube completion bash)" >~/.config/bashrc.d/minikube_completion.sh
 }
@@ -39,6 +41,9 @@ function uninstall_minikube() {
 function install_k3d() {
     echo "Installing K3d..."
     curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+
+    mkdir -p ~/.config/bashrc.d
+    mkdir -p ~/.config/zshrc.d
     echo "source <(k3d completion bash)" >~/.config/bashrc.d/k3d_completion.sh
     echo "source <(k3d completion zsh)" >~/.config/zshrc.d/k3d_completion.sh
 }
@@ -69,10 +74,10 @@ function install() {
     sudo apt install -y kubectl
 
     # Installing kubectl autocomplete
-    mkdir ~/.config/bashrc.d
-    echo "source <(kubectl completion bash)" >~/.config/bashrc.d/kubernetes.sh
-    mkdir ~/.config/zshrc.d
-    echo "source <(kubectl completion zsh)" >~/.config/zshrc.d/kubernetes.sh
+    mkdir -p ~/.config/bashrc.d
+    mkdir -p ~/.config/zshrc.d
+    echo "source <(kubectl completion bash)" >~/.config/bashrc.d/kubectl_completion.sh
+    echo "source <(kubectl completion zsh)" >~/.config/zshrc.d/kubectl_completion.sh
 
     #
     # Installing kubectx and kubens
@@ -111,8 +116,8 @@ function uninstall() {
     uninstall_minikube
 
     # Uninstalling kubectl autocomplete
-    rm ~/.config/bashrc.d/kubernetes.sh
-    rm ~/.config/zshrc.d/kubernetes.sh
+    rm ~/.config/bashrc.d/kubectl_completion.sh
+    rm ~/.config/zshrc.d/kubectl_completion.sh
 
     #
     # Uninstalling kubectl
