@@ -2,9 +2,52 @@
 
 source "${BASH_SOURCE%/*}/common.sh"
 
-function install() {
+#
+# Installs k3s.
+#
+function install_k3s() {
     echo "Installing k3s..."
     curl -sfL https://get.k3s.io | sudo sh -
+}
+
+function uninstall_k3s() {
+    echo "Uninstalling K3s..."
+    sudo k3s-uninstall.sh
+}
+
+function install_minikube() {
+    echo "Installing Minikube..."
+    pushd /tmp || exit
+    curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+    sudo mv minikube-linux-amd64 /usr/local/bin/minikube
+    sudo chmod 755 /usr/local/bin/minikube
+    popd || exit
+}
+
+function uninstall_minikube() {
+    echo "Uninstalling Minikube..."
+    sudo rm /usr/local/bin/minikube
+}
+
+function install_k3d() {
+    echo "Installing K3d..."
+    curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+}
+
+function uninstall_k3d() {
+    echo "Uninstalling K3d..."
+    sudo rm /usr/local/bin/k3d
+}
+
+function install() {
+    # Local K8s development is much easier with a containerized distro like
+    # Minikube or K3s. Direct install of K3s is disabled by default. Uncomment
+    # to install.
+    #
+    # install_k3s
+
+    install_minikube
+    install_k3d
 
     # 
     # Installing kubectl
@@ -47,9 +90,13 @@ function install() {
 }
 
 function uninstall() {
-    echo "Uninstalling K3s..."
-    sudo k3s-uninstall.sh
+    # K3s is not installed by default. Uncomment to uninstall it.
+    #
+    # uninstall_k3s
 
+    uninstall_k3d
+    uninstall_minikube
+    
     # Uninstalling kubectl autocomplete
     rm ~/.config/bashrc.d/kubernetes.sh
     rm ~/.config/zshrc.d/kubernetes.sh
