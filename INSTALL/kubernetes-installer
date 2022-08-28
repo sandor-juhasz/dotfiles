@@ -2,6 +2,8 @@
 
 source "${BASH_SOURCE%/*}/common.sh"
 
+VSCODE_EXTENSION="ms-kubernetes-tools.vscode-kubernetes-tools"
+
 #
 # Installs k3s.
 #
@@ -87,6 +89,8 @@ function install() {
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
     sudo apt update
     sudo apt install helm
+
+    install_vscode_extension "${VSCODE_EXTENSION}"
 }
 
 function uninstall() {
@@ -96,7 +100,7 @@ function uninstall() {
 
     uninstall_k3d
     uninstall_minikube
-    
+
     # Uninstalling kubectl autocomplete
     rm ~/.config/bashrc.d/kubernetes.sh
     rm ~/.config/zshrc.d/kubernetes.sh
@@ -120,6 +124,8 @@ function uninstall() {
     sudo apt -y remove helm
     sudo rm /etc/apt/sources.list.d/helm-stable-debian.list
     sudo rm /etc/apt/keyrings/helm.gpg        
+
+    uninstall_vscode_extension "${VSCODE_EXTENSION}"
 }
 
 main $1
