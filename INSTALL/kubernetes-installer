@@ -24,20 +24,29 @@ function install_minikube() {
     sudo mv minikube-linux-amd64 /usr/local/bin/minikube
     sudo chmod 755 /usr/local/bin/minikube
     popd || exit
+
+    echo "source <(minikube completion zsh)" >~/.config/zshrc.d/minikube_completion.sh
+    echo "source <(minikube completion bash)" >~/.config/bashrc.d/minikube_completion.sh
 }
 
 function uninstall_minikube() {
     echo "Uninstalling Minikube..."
+    rm ~/.config/bashrc.d/minikube_completion.sh
+    rm ~/.config/zshrc.d/minikube_completion.sh    
     sudo rm /usr/local/bin/minikube
 }
 
 function install_k3d() {
     echo "Installing K3d..."
     curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+    echo "source <(k3d completion bash)" >~/.config/bashrc.d/k3d_completion.sh
+    echo "source <(k3d completion zsh)" >~/.config/zshrc.d/k3d_completion.sh
 }
 
 function uninstall_k3d() {
     echo "Uninstalling K3d..."
+    rm ~/.config/bashrc.d/k3d_completion.sh
+    rm ~/.config/zshrc.d/k3d_completion.sh    
     sudo rm /usr/local/bin/k3d
 }
 
