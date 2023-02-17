@@ -20,6 +20,22 @@ function install() {
     sudo apt update 
     sudo apt -y install ${PACKAGES}
 
+    echo "Installing and configuring Git Credential Manager Core..."
+    if is_wsl; then
+        echo "Steps on WSL"
+    else
+        sudo apt -y install "dotnet-sdk-6.0"
+        mkdir -p ~/.config/bashrc.d
+        mkdir -p ~/.config/zshrc.d
+        echo 'export PATH=$PATH:$HOME/.dotnet/tools' >~/.config/zshrc.d/dotnet.sh
+        echo 'export PATH=$PATH:$HOME/.dotnet/tools' >~/.config/bashrc.d/dotnet.sh
+
+        dotnet tool install -g git-credential-manager
+        git-credential-manager configure
+        # Configure the git credential manager to use the freedesktop.org Secret Service API
+        git config --global credential.credentialStore secretservice
+    fi
+
     echo "Installing Visual Studio Code..."
     if is_wsl; then
         echo "VSCode should not be installed in the WSL distro. Skipping this step..."
