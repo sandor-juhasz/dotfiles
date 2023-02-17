@@ -11,7 +11,6 @@ installation_path="/opt"
 cd "${installation_path}" || exit
 git clone https://github.com/sandor-juhasz/dotfiles.git
 cd dotfiles || exit
-git remote set-url origin git@github.com:sandor-juhasz/dotfiles.git
 git config user.name "sandor.juhasz"
 git config user.email "sandor.juhasz.1983@gmail.com"
 cd ..
