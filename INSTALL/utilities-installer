@@ -20,7 +20,8 @@ function install() {
     sudo apt update 
     sudo apt -y install ${PACKAGES}
 
-    if grep -q Microsoft /proc/version; then
+    echo "Installing Visual Studio Code..."
+    if is_wsl; then
         echo "VSCode should not be installed in the WSL distro. Skipping this step..."
     else
         echo "Not WSL distro, installing VSCode."
@@ -43,7 +44,7 @@ function install() {
 function uninstall() {
     sudo apt -y remove ${PACKAGES}
 
-    if grep -q Microsoft /proc/version; then
+    if is_wsl; then
         echo "VSCode should not be installed in the WSL distro. Doing nothing..."
     else
         sudo apt remove code
