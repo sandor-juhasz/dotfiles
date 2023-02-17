@@ -22,7 +22,8 @@ function install() {
 
     echo "Installing and configuring Git Credential Manager Core..."
     if is_wsl; then
-        echo "Steps on WSL"
+        git config --global credential.helper "/mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager-core.exe"
+        git config --global credential.https://dev.azure.com.useHttpPath true
     else
         sudo apt -y install "dotnet-sdk-6.0"
         mkdir -p ~/.config/bashrc.d
