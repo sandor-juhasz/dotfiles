@@ -31,3 +31,11 @@ function uninstall_vscode_extension() {
        echo "Visual Studio code was not found, skipping plugin uninstall."
     fi
 }
+
+#
+# Tests if the process is running from Microsoft WSL
+# https://stackoverflow.com/questions/38086185/how-to-check-if-a-program-is-run-in-bash-on-ubuntu-on-windows-and-not-just-plain
+#
+is_wsl() {
+    grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null
+}
