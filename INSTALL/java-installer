@@ -6,7 +6,7 @@ source "${BASH_SOURCE%/*}/common.sh"
 JAVA_VERSION="18.0.2"
 JAVA_INSTALL_ROOT="/usr/local"
 
-MAVEN_VERSION="3.8.6"
+MAVEN_VERSION="3.9.0"
 MAVEN_INSTALL_ROOT="/usr/local"
 
 #
