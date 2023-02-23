@@ -37,6 +37,11 @@ function install() {
         git config --global credential.credentialStore secretservice
     fi
 
+    #
+    # Configure Git
+    #
+    git config --global init.defaultBranch main
+
     echo "Installing Visual Studio Code..."
     if is_wsl; then
         echo "VSCode should not be installed in the WSL distro. Skipping this step..."
