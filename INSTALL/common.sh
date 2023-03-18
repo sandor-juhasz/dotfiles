@@ -39,3 +39,7 @@ function uninstall_vscode_extension() {
 function is_wsl() {
     grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null
 }
+
+function list_vscode_extensions() {
+    code --list-extensions
+}

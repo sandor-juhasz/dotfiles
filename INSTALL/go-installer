@@ -2,7 +2,20 @@
 
 source "${BASH_SOURCE%/*}/common.sh"
 
-GO_VERSION="1.19"
+function latest_go_version() {
+    list_go_versions | head -1
+}
+
+#
+# Queries all available versions for Linux - AMD64.
+#
+# The function scrapes the Go download page.
+#
+function list_go_versions() {
+    curl -s https://go.dev/dl/ | grep -Po '(?<=class="download" href="/dl/go).*(?=\.linux-amd64\.tar\.gz")' | sort -V -r
+}
+
+GO_VERSION="$(latest_go_version)"
 GO_INSTALL_ROOT="/usr/local"
 
 #
