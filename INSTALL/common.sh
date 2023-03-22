@@ -5,8 +5,10 @@ function main() {
         install
     elif [[ $1 == "uninstall" ]]; then
         uninstall
+    elif [[ $1 == "upgrade" ]]; then
+        upgrade
     else
-        echo "Usage: $(basename $0) {install|uninstall}"
+        echo "Usage: $(basename $0) {install|uninstall|upgrade}"
     fi    
 }
 
