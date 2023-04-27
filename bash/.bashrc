@@ -142,3 +142,5 @@ alias la='exa -aF --group-directories-first'
 alias l='exa -F --group-directories-first'
 alias ls='exa -F --group-directories-first'
 alias tree='exa --tree --group-directories-first'
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

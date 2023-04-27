@@ -61,6 +61,15 @@ function install() {
         sudo apt update
         sudo apt -y install code
     fi
+
+    echo "Setting up fzf..."
+    if ! which fzf; then
+        echo "Installing fzf from Github..."
+        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.local/share/fzf
+        ~/.local/share/fzf/install
+    else
+        echo "fzf has already been installed, doing nothing."
+    fi
 }
 
 function uninstall() {
