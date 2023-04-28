@@ -41,3 +41,17 @@ alias alp="grep --color=never -Po '(?<=\[profile ).*(?=\])' ~/.aws/config"
 alias ap='export AWS_PROFILE=$(alp | fzf --height 10 --border=rounded --border-label="Select an AWS profile" --history=$HOME/.aws/profile_history)'
 
 alias al='aws sso login'
+
+#
+# Browser integration
+#
+
+function is_wsl() {
+    grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null
+}
+
+if is_wsl; then
+    export BROWSER='/mnt/c/Program Files/Google/Chrome/Application/chrome.exe'
+fi
+
+alias b='$BROWSER'
