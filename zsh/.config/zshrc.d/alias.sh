@@ -23,6 +23,8 @@ alias edir='code .'
 # Edit the specified file
 alias e='$EDITOR'
 
+alias ep=edit-project
+
 #
 # AWS aliases and customizations
 # - `ap` to switch configured AWS profiles.

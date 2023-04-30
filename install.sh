@@ -23,6 +23,7 @@ if [[ ! -L ~/.bashrc ]]; then
     mv ~/.bashrc ~/.bashrc.old
 fi
 
-stow --target "${HOME}" --no-folding bash emacs ssh tmux zsh X shell-common vim
+./refresh-stow.sh
+
 echo "Done."
 

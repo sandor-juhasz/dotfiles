@@ -1,0 +1,34 @@
+#!/bin/bash
+###############################################################################
+# Edit a recently edited project in the default editor.
+# The recently edited projects are stored in ~/.local/var/cache/edit-project.cache
+###############################################################################
+
+cache_dir=~/.local/var/cache
+cache_file="${cache_dir}/edit-project.cache"
+
+add_dir_to_cache() {
+    local dirname=$1
+    mkdir -p "${cache_dir}"
+    echo "$1" >>"${cache_file}"
+    cat "${cache_file}" | sort | uniq >"${cache_file}.new"
+    mv "${cache_file}.new" "${cache_file}"
+}
+
+if [ $# -eq 0 ]; then
+    project=$(cat "${cache_file}" | fzf --border=rounded --border-label="Select a project to edit")
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
+    $EDITOR "${project}"
+else
+    dir_to_open=$1
+    if [ ! -d "${dir_to_open}" ]; then
+        echo "Not a directory: ${dir_to_open}"
+        exit 1
+    else
+        full_path=$(readlink -f "$dir_to_open")
+        add_dir_to_cache "${full_path}"
+        $EDITOR "${full_path}"
+    fi
+fi
