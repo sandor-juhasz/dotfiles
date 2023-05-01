@@ -70,6 +70,9 @@ function install() {
     else
         echo "fzf has already been installed, doing nothing."
     fi
+
+    echo "Installing YQ"
+    wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O ~/.local/bin/yq && chmod +x ~/.local/bin/yq
 }
 
 function uninstall() {
