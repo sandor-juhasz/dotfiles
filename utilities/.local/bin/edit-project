@@ -10,13 +10,13 @@ cache_file="${cache_dir}/edit-project.cache"
 add_dir_to_cache() {
     local dirname=$1
     mkdir -p "${cache_dir}"
-    echo "$1" >>"${cache_file}"
-    cat "${cache_file}" | sort | uniq >"${cache_file}.new"
+    echo "${dirname}" >>"${cache_file}"
+    sort "${cache_file}" | uniq >"${cache_file}.new"
     mv "${cache_file}.new" "${cache_file}"
 }
 
 if [ $# -eq 0 ]; then
-    project=$(cat "${cache_file}" | fzf --border=rounded --border-label="Select a project to edit")
+    project=$(fzf --border=rounded --border-label="Select a project to edit" <"${cache_file}")
     if [ $? -ne 0 ]; then
         exit 1
     fi
