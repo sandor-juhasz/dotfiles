@@ -1,0 +1,26 @@
+#!/bin/bash
+
+source "$HOME/.local/share/js-shell-lib/all.sh"
+
+tui_title "Configure Git repo with local identity"
+
+default_username=$(registry_read "git-configure-local-user" "username")
+default_email=$(registry_read "git-configure-local-user" "email")
+
+username=$(tui_input "Local Git Username: " "${default_username}")
+email=$(tui_input "Local Git Email: " "${default_email}")
+
+
+tui_confirm_continue <<EOF
+New repository-local settings:
+   User name: $username
+   Email:     $email
+EOF
+
+git config user.name "${username}"
+git config user.email "${email}"
+
+registry_write "git-configure-local-user" "username" "${username}"
+registry_write "git-configure-local-user" "email" "${email}"
+
+echo "Git config is updated."

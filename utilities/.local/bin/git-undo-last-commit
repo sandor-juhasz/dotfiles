@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# Moves the HEAD of the current branch to the previous commit.
+# Keeps the working copy intact.
+#
+# Note: use this command for local commits only.
+#
+git reset HEAD~
