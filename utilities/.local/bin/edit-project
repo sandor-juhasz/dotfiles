@@ -15,6 +15,13 @@ add_dir_to_cache() {
     mv "${cache_file}.new" "${cache_file}"
 }
 
+if [ ! -d "${cache_dir}" ]; then
+    mkdir -p "${cache_dir}"
+fi
+if [ ! -f "${cache_file}" ]; then
+    touch "${cache_file}"
+fi
+
 if [ $# -eq 0 ]; then
     project=$(fzf --border=rounded --border-label="Select a project to edit" <"${cache_file}")
     if [ $? -ne 0 ]; then
