@@ -76,7 +76,7 @@ function install() {
 
     echo "Installing cookiecutter"
     python3 -m pip install --user cookiecutter
-    mkdir -p "~/projects"
+    mkdir -p ~/projects
     if [ ! -d ~/projects/project-templates ]; then
         git clone https://github.com/sandor-juhasz/project-templates.git ~/projects/project-templates
     fi
