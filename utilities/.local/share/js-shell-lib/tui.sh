@@ -1,9 +1,4 @@
 
-die() {
-    echo "$*" 1>&2
-    exit 1
-}
-
 tui_title() {
     gum style "   $1   " --border="rounded"
 }
