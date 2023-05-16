@@ -8,4 +8,5 @@
 #
 # Uncomment the following line to test the feature:
 #
-export TESTVAR=test
+export PROJECTS_HOME=$HOME/projects
+
