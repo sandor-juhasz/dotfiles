@@ -1,6 +1,6 @@
-# My dotfiles
+# Dotfiles
 
-This project contains the dotfiles I use on various Ubuntu environments.
+This project is the repository for installation scripts and customizations of the Linux tools I use regularly.
 
 # Installation
 0. Make sure you have Git installed.

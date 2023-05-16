@@ -73,6 +73,13 @@ function install() {
 
     echo "Installing YQ"
     wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O ~/.local/bin/yq && chmod +x ~/.local/bin/yq
+
+    echo "Installing cookiecutter"
+    python3 -m pip install --user cookiecutter
+    mkdir -p "~/projects"
+    if [ ! -d ~/projects/project-templates ]; then
+        git clone https://github.com/sandor-juhasz/project-templates.git ~/projects/project-templates
+    fi
 }
 
 function uninstall() {

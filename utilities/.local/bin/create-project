@@ -1,0 +1,43 @@
+#!/bin/bash
+
+TEMPLATE_HOME="$HOME/projects/project-templates"
+PROJECT_HOME="$HOME/projects"
+
+die() {
+    echo "$*" 1>&2
+    exit 1
+}
+
+check_template_exists() {
+    return $(test -d "$TEMPLATE_HOME/$1")
+}
+
+list_dirs() {
+    find $1/* -prune -type d -printf "%f\n"
+}
+
+choose_template() {
+    local project=$(list_dirs "${TEMPLATE_HOME}" | fzf --border=rounded --border-label="Select a project template")
+    if [ $? -ne 0 ]; then
+        exit 1
+    fi
+    echo $project
+}
+
+main() {
+    local template_name="$1"
+    if [ -z "${template_name}"]; then
+        template_name=$(choose_template)
+    fi
+
+    echo "Checking $template_name"
+    check_template_exists "$template_name" || die "Template not found."
+    cookiecutter "$TEMPLATE_HOME" --directory "$template_name" --output-dir "$PROJECT_HOME" || die "create-project: Error while executing Cookiecutter. Exiting."
+    echo "Project is successfully created."
+}
+
+list_templates() {
+    ls -1 "$TEMPLATE_HOME"
+}
+
+main $@

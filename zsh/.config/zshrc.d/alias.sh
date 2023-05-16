@@ -24,6 +24,7 @@ alias edir='code .'
 alias e='$EDITOR'
 
 alias ep=edit-project
+alias crp=create-project
 
 #
 # AWS aliases and customizations
