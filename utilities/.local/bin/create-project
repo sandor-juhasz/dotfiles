@@ -36,7 +36,13 @@ main() {
     check_template_exists "$template_name" || die "Template not found."
     cookiecutter "$TEMPLATE_HOME" --directory "$template_name" --output-dir "$PROJECT_HOME" || die "create-project: Error while executing Cookiecutter. Exiting."
     echo "Project is successfully created."
-    tui_confirm "Do you want to edit the project?" && edit-project "${PROJECT_HOME}/$(latest_directory "${PROJECT_HOME}")"
+    echo "Initializing Git..."
+    local project_dir
+    project_dir="${PROJECT_HOME}/$(latest_directory "${PROJECT_HOME}")"
+    pushd "${project_dir}" || die "Cannot enter ${project_dir} to initialize git."
+    git init
+    popd || die "Popd failed."
+    tui_confirm "Do you want to edit the project?" && edit-project "${project_dir}"
 }
 
 list_templates() {
