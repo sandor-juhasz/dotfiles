@@ -20,3 +20,7 @@ tui_confirm_continue() {
     gum confirm "Continue?"
     [[ "$?" != 0 ]] && die
 }
+
+tui_confirm() {
+    gum confirm "$1"
+}
