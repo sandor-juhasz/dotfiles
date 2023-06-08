@@ -17,17 +17,13 @@ list_dirs() {
 }
 
 choose_template() {
-    local project=$(list_dirs "${TEMPLATE_HOME}" | fzf --border=rounded --border-label="Select a project template")
-    if [ $? -ne 0 ]; then
-        exit 1
-    fi
-    echo $project
+    list_dirs "${TEMPLATE_HOME}" | fzf --border=rounded --border-label="Select a project template"
 }
 
 main() {
     local template_name="$1"
-    if [ -z "${template_name}"]; then
-        template_name=$(choose_template)
+    if [ -z "${template_name}" ]; then
+        template_name=$(choose_template) || die "Interrupted."
     fi
 
     echo "Checking $template_name"
