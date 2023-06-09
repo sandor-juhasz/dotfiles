@@ -3,10 +3,10 @@
 source "${BASH_SOURCE%/*}/common.sh"
 
 # TODO: add dynamic parsing for version number.
-JAVA_VERSION="18.0.2"
 JAVA_INSTALL_ROOT="/usr/local"
+JAVA_SYMLINK_DIR="${JAVA_INSTALL_ROOT}/jdk"
 
-MAVEN_VERSION="3.9.0"
+MAVEN_VERSION="3.9.2"
 MAVEN_INSTALL_ROOT="/usr/local"
 
 #
@@ -14,10 +14,6 @@ MAVEN_INSTALL_ROOT="/usr/local"
 #
 # https://dlcdn.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz
 
-JAVA_INSTALL_DIR="${JAVA_INSTALL_ROOT}/openjdk-${JAVA_VERSION}"
-JAVA_SYMLINK_DIR="${JAVA_INSTALL_ROOT}/jdk"
-JAVA_INSTALL_PACKAGE="openjdk-18.0.2_linux-x64_bin.tar.gz"
-JAVA_INSTALL_PACKAGE_URL="https://download.java.net/java/GA/jdk18.0.2/f6ad4b4450fd4d298113270ec84f30ee/9/GPL/openjdk-18.0.2_linux-x64_bin.tar.gz"
 
 MAVEN_INSTALL_DIR="${MAVEN_INSTALL_ROOT}/apache-maven-${MAVEN_VERSION}"
 MAVEN_SYMLINK_DIR="${MAVEN_INSTALL_ROOT}/maven"
@@ -26,17 +22,56 @@ MAVEN_INSTALL_PACKAGE_URL="https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSIO
 
 VSCODE_EXTENSION="vscjava.vscode-java-pack"
 
-function install() {
-    pushd /tmp || exit
+function install_openjdk() {
+    local jdk_version=$1
+    local jdk="JDK ${jdk_version}"
+    echo "Installing ${jdk}..."
 
-    echo "Installing OpenJDK..."
-    wget "${JAVA_INSTALL_PACKAGE_URL}"
-    tar -xvzf "${JAVA_INSTALL_PACKAGE}"
-    sudo mv "jdk-18.0.2" "${JAVA_INSTALL_ROOT}"
-    sudo mv "${JAVA_INSTALL_ROOT}/jdk-18.0.2" "${JAVA_INSTALL_DIR}"
-    sudo ln -s "${JAVA_INSTALL_DIR}" "${JAVA_SYMLINK_DIR}"
-    rm "${JAVA_INSTALL_PACKAGE}"
+    mkdir -p /tmp/openjdk-install
+    openjdk-versions >/tmp/openjdk-install/versions
 
+    local package_url=$(cat /tmp/openjdk-install/versions | jq -r ".[] | select(.name==\"${jdk}\").url")
+    local package_checksum_url=$(cat /tmp/openjdk-install/versions | jq -r ".[] | select(.name==\"${jdk}\").sha256")
+    local version=$(cat /tmp/openjdk-install/versions | jq -r ".[] | select(.name==\"${jdk}\").version")
+    local package_filename=$(echo "$package_url" | sed 's|.*/\([^/]*\)$|\1|')
+
+    echo "Installing OpenJDK ${version}..."
+    echo "   Package URL: ${package_url}"
+    echo "   Package version: ${version}"
+    echo "   Package filename: ${package_filename}"
+    
+    if [[ -d "${JAVA_INSTALL_ROOT}/openjdk-${version}" ]]; then
+        echo "OpenJDK ${version} has already been installed."
+        return 0
+    fi
+
+    mkdir -p /tmp/openjdk-install
+    pushd /tmp/openjdk-install || return 1
+    
+    wget "${package_url}"
+    wget "${package_checksum_url}"
+
+    tar -xvzf "${package_filename}"
+    installdir=$(/bin/ls -ctd */ | head -1)
+    if [[ "$installdir" != "openjdk-${version}" ]]; then
+        mv "$installdir" "openjdk-${version}" 
+    fi
+
+    sudo mv "openjdk-${version}" "${JAVA_INSTALL_ROOT}"
+    if [[ -e "${JAVA_SYMLINK_DIR}" ]]; then
+        echo "Deleting previous symlink ${JAVA_SYMLINK_DIR}..."
+        sudo rm "${JAVA_SYMLINK_DIR}"
+    fi
+    echo "Creating symlink ${JAVA_SYMLINK_DIR}..."
+    sudo ln -s "${JAVA_INSTALL_ROOT}/openjdk-${version}" "${JAVA_SYMLINK_DIR}"
+    popd || return 1
+
+    echo "Cleanup..."
+    rm -r "/tmp/openjdk-install"
+    echo "JDK ${version} has been successfully installed."
+}
+
+install_maven() {
     echo "Installing Maven..."
     wget "${MAVEN_INSTALL_PACKAGE_URL}"
     tar -xvzf "${MAVEN_INSTALL_PACKAGE}"
@@ -45,7 +80,13 @@ function install() {
     rm "${MAVEN_INSTALL_PACKAGE}"
 
     popd || exit
+}
 
+function install() {
+    pushd /tmp || exit
+
+    install_openjdk 20
+    install_maven
     install_vscode_extension "${VSCODE_EXTENSION}"
 
     mkdir -p ~/.config/env.d
@@ -54,7 +95,6 @@ export JAVA_HOME=${JAVA_SYMLINK_DIR}
 export PATH=\$PATH:/usr/local/jdk/bin
 export PATH=\$PATH:/usr/local/maven/bin
 EOF
-
 }
 
 function uninstall() {
@@ -89,4 +129,6 @@ function uninstall() {
     uninstall_vscode_extension "${VSCODE_EXTENSION}"
 }
 
-main $1
+#main $1
+
+install
