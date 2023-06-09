@@ -101,18 +101,6 @@ export PATH=\$PATH:/usr/local/maven/bin
 EOF
 }
 
-
-select_default_jdk() {
-    echo "Select default JDK"
-    local default_jdk=$(list_installed_jdks | gum choose)
-    if [[ -e "${JAVA_SYMLINK_DIR}" ]]; then
-        echo "Deleting previous symlink ${JAVA_SYMLINK_DIR}..."
-        sudo rm "${JAVA_SYMLINK_DIR}"
-    fi
-    echo "Creating symlink ${JAVA_SYMLINK_DIR}..."
-    sudo ln -s "${default_jdk}" "${JAVA_SYMLINK_DIR}"
-}
-
 uninstall_jdk() {
     echo "uninstalling $1"
     sudo rm -r $1

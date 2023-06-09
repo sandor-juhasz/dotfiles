@@ -1,0 +1,21 @@
+#!/bin/bash
+
+JAVA_SYMLINK_DIR="${JAVA_INSTALL_ROOT}/jdk"
+
+list_installed_jdks() {
+    /bin/ls -1d /usr/local/openjdk-*
+}
+
+select_default_jdk() {
+    echo "Select default JDK"
+    local default_jdk=$(list_installed_jdks | gum choose)
+    if [[ -e "${JAVA_SYMLINK_DIR}" ]]; then
+        echo "Deleting previous symlink ${JAVA_SYMLINK_DIR}..."
+        sudo rm "${JAVA_SYMLINK_DIR}"
+    fi
+    echo "Creating symlink ${JAVA_SYMLINK_DIR}..."
+    sudo ln -s "${default_jdk}" "${JAVA_SYMLINK_DIR}"
+    echo "Done."
+}
+
+select_default_jdk
