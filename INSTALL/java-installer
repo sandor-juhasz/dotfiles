@@ -22,6 +22,10 @@ MAVEN_INSTALL_PACKAGE_URL="https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSIO
 
 VSCODE_EXTENSION="vscjava.vscode-java-pack"
 
+function list_installed_jdks() {
+    /bin/ls -1d /usr/local/openjdk-*
+}
+
 function install_openjdk() {
     local jdk_version=$1
     local jdk="JDK ${jdk_version}"
@@ -97,18 +101,35 @@ export PATH=\$PATH:/usr/local/maven/bin
 EOF
 }
 
-function uninstall() {
-    echo "Uninstalling JDK..."
 
-    if [[ -L "${JAVA_SYMLINK_DIR}" ]]; then
-        echo "Removing symlink ${JAVA_SYMLINK_DIR}"
+select_default_jdk() {
+    echo "Select default JDK"
+    local default_jdk=$(list_installed_jdks | gum choose)
+    if [[ -e "${JAVA_SYMLINK_DIR}" ]]; then
+        echo "Deleting previous symlink ${JAVA_SYMLINK_DIR}..."
         sudo rm "${JAVA_SYMLINK_DIR}"
     fi
+    echo "Creating symlink ${JAVA_SYMLINK_DIR}..."
+    sudo ln -s "${default_jdk}" "${JAVA_SYMLINK_DIR}"
+}
 
-    if [[ -d "${JAVA_INSTALL_DIR}" ]]; then
-        echo "Removing install dir ${JAVA_INSTALL_DIR}"
-        sudo rm -r "${JAVA_INSTALL_DIR}"
-    fi    
+uninstall_jdk() {
+    echo "uninstalling $1"
+    sudo rm -r $1
+    echo "Done."
+}
+
+
+uninstall_all_jdks() {
+    list_installed_jdks | while read jdk; do
+        uninstall_jdk $jdk
+    done
+    sudo rm "${JAVA_SYMLINK_DIR}"
+}
+
+function uninstall() {
+    echo "Uninstalling JDKs..."
+    uninstall_all_jdks
 
     echo "Uninstalling Maven..."
     if [[ -L "${MAVEN_SYMLINK_DIR}" ]]; then
@@ -129,6 +150,4 @@ function uninstall() {
     uninstall_vscode_extension "${VSCODE_EXTENSION}"
 }
 
-#main $1
-
-install
+main $1
