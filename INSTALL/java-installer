@@ -21,6 +21,7 @@ MAVEN_INSTALL_PACKAGE="apache-maven-${MAVEN_VERSION}-bin.tar.gz"
 MAVEN_INSTALL_PACKAGE_URL="https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz"
 
 VSCODE_EXTENSION="vscjava.vscode-java-pack"
+VSCODE_SONARLINT="SonarSource.sonarlint-vscode"
 
 function list_installed_jdks() {
     /bin/ls -1d /usr/local/openjdk-*
@@ -92,6 +93,7 @@ function install() {
     install_openjdk 20
     install_maven
     install_vscode_extension "${VSCODE_EXTENSION}"
+    install_vscode_extension "${VSCODE_SONARLINT}"
 
     mkdir -p ~/.config/env.d
     cat <<EOF >~/.config/env.d/java.sh
