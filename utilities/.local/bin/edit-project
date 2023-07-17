@@ -23,7 +23,7 @@ if [ ! -f "${cache_file}" ]; then
 fi
 
 if [ $# -eq 0 ]; then
-    project=$(fzf --border=rounded --border-label="Select a project to edit" <"${cache_file}")
+    project=$(fzf --tac --border=rounded --border-label="Select a project to edit" <"${cache_file}")
     if [ $? -ne 0 ]; then
         exit 1
     fi

@@ -19,7 +19,7 @@ list_dirs() {
 }
 
 choose_template() {
-    list_dirs "${TEMPLATE_HOME}" | fzf --border=rounded --border-label="Select a project template"
+    list_dirs "${TEMPLATE_HOME}" | fzf --tac --border=rounded --border-label="Select a project template"
 }
 
 latest_directory() {
