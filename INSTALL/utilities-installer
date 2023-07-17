@@ -12,6 +12,31 @@ source "${BASH_SOURCE%/*}/common.sh"
 
 PACKAGES="curl emacs exa git htop jq mc ncdu powerline stow tmux vim-gtk3 zsh python3-pip"
 
+#
+# Installs the VirtualenvWrapper to manage Python virtualenvs.
+# For details, please visit https://virtualenvwrapper.readthedocs.io/
+#
+function install_virtualenvwrapper() {
+    echo "Installing virtualenvwrapper"
+    pip3 install --use virtualenvwrapper
+}
+
+function install_cookiecutter() {
+    echo "Installing cookiecutter"
+    mkdir -p ~/.virtualenvs
+    python3 -m venv ~/.virtualenvs/cookiecutter
+    source ~/.virtualenvs/cookiecutter/bin/activate
+    pip install cookiecutter
+    deactivate
+    ln -s ~/.virtualenvs/cookiecutter/bin/cookiecutter ~/.local/bin/cookiecutter
+}
+
+function uninstall_cookiecutter() {
+    echo "Uninstalling cookiecutter"
+    rm ~/.local/bin/cookiecutter
+    rm -r ~/.virtualenvs/cookiecutter
+}
+
 function install() {
     # Installation steps are added from https://www.terraform.io/downloads
 
@@ -74,8 +99,9 @@ function install() {
     echo "Installing YQ"
     wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O ~/.local/bin/yq && chmod +x ~/.local/bin/yq
 
-    echo "Installing cookiecutter"
-    python3 -m pip install --user cookiecutter
+    install_virtualenvwrapper
+    install_cookiecutter
+    
     mkdir -p ~/projects
     if [ ! -d ~/projects/project-templates ]; then
         git clone https://github.com/sandor-juhasz/project-templates.git ~/projects/project-templates
@@ -102,6 +128,8 @@ function uninstall() {
         sudo rm /etc/apt/keyrings/packages.microsoft.gpg
         sudo apt update
     fi
+
+    uninstall_cookiecutter    
 }
 
 main $1

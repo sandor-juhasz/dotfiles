@@ -27,3 +27,8 @@ This project is the repository for installation scripts and customizations of th
   curl https://raw.githubusercontent.com/sandor-juhasz/dotfiles/master/install-global.sh | bash -s
   ```
   
+## Principles
+
+- All standalone Python utilities installed using pip (for example, Cookiecutter)
+  are installed into their own virtualenv under `~/.virtualenvs/<utility-name>`.
+  The executable is symlinked into `~/.local/bin`
