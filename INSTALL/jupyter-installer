@@ -1,0 +1,61 @@
+#!/bin/bash
+######################################################################################
+# Installs Notebook software
+#
+# Components installed:
+#   - Jupyter
+#
+# Notes
+#   - The Jupyter packages and kernels are installed using pip --user in the user's
+#     home directory. This leads to more than 250 MB of Python packages are installed
+#     which are hard to uninstall and maintain. A better segregation of the Jupyter
+#     environment is required without installing Jupyter in each virtual env.
+#
+######################################################################################
+
+source "${BASH_SOURCE%/*}/common.sh"
+
+#
+# Jupyter main
+#
+function install_jupyter() {
+    pip install --user jupyter
+}
+
+function upgrade_jupyter() {
+    pip install -U jupyter
+}
+
+
+#
+# Bash kernel
+#
+function install_bash_kernel() {
+    pip install --user bash_kernel
+    python3 -m bash_kernel.install
+}
+
+function upgrade_bash_kernel() {
+    pip install --user bash_kernel
+    python3 -m bash_kernel.install
+}
+
+#
+# 
+#
+
+function install() {
+    install_jupyter
+    install_bash_kernel
+}
+
+function uninstall() {
+    echo "Done"
+}
+
+function upgrade() {
+    upgrade_jupyter
+    upgrade_bash_kernel
+}
+
+main $1
