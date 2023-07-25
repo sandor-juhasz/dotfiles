@@ -7,11 +7,13 @@
 #   - Libraries: 
 #       - ggplot2
 #       - languageserver 
+#       - IRkernel (Jupyter kernel)
 #   - VSCode Extensions: R, R Debugger
 #
 # Notes
 #   - The libraries are compiled at installation time which require ~10 mins of time.
 #   - The libraries are installed under ~/R
+#   - The VSCode R integration cannot run "lintr" in VSCode Notebook cells.
 #
 ######################################################################################
 
@@ -35,6 +37,8 @@ function install_r() {
     Rscript - <<EOF
 install.packages("ggplot2", lib="$local_lib_dir")    
 install.packages("languageserver", lib="$local_lib_dir")
+install.packages('IRkernel')
+IRkernel::installspec()
 EOF
 
     echo "Removing temporary files..."
