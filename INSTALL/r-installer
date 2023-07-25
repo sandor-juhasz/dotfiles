@@ -1,0 +1,73 @@
+#!/bin/bash
+######################################################################################
+# Installs R 
+#
+# Components installed:
+#   - Latest R version from CRAN
+#   - Libraries: 
+#       - ggplot2
+#       - languageserver 
+#   - VSCode Extensions: R, R Debugger
+#
+# Notes
+#   - The libraries are compiled at installation time which require ~10 mins of time.
+#   - The libraries are installed under ~/R
+#
+######################################################################################
+
+source "${BASH_SOURCE%/*}/common.sh"
+
+#
+# Jupyter main
+#
+function install_r() {
+    curl -fsSL https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo gpg --dearmor -o /etc/apt/keyrings/cran_ubuntu_key.gpg
+
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/cran_ubuntu_key.gpg] https://cloud.r-project.org/bin/linux/ubuntu \
+        $(lsb_release -cs)-cran40/" | sudo tee /etc/apt/sources.list.d/cran_ubuntu.list > /dev/null
+
+    sudo apt update
+    sudo apt install libxml2-dev r-base r-base-dev -y    # libxml2-dev is needed for VSCode Language server.
+
+    local_lib_dir="$HOME/R/x86_64-pc-linux-gnu-library/4.3"
+    mkdir -p "$local_lib_dir"
+
+    Rscript - <<EOF
+install.packages("ggplot2", lib="$local_lib_dir")    
+install.packages("languageserver", lib="$local_lib_dir")
+EOF
+
+    echo "Removing temporary files..."
+    rm -r /tmp/Rtmp*
+    
+    echo "Installing VSCode extensions..."
+    install_vscode_extension REditorSupport.r
+    install_vscode_extension RDebugger.r-debugger
+}
+
+
+function uninstall_r() {
+    sudo apt autoremove r-base r-base-dev -y
+
+    sudo rm /etc/apt/sources.list.d/cran_ubuntu.list \
+            /etc/apt/keyrings/cran_ubuntu_key.gpg
+        
+    rm -r ~/R
+
+    uninstall_vscode_extension REditorSupport.r
+    uninstall_vscode_extension RDebugger.r-debugger
+}
+
+function install() {
+    install_r
+}
+
+function uninstall() {
+    uninstall_r
+}
+
+function upgrade() {
+    echo "Done"
+}
+
+main $1
