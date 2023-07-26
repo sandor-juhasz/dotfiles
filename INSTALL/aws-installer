@@ -3,8 +3,9 @@
 # Installs tools for AWS development
 #
 # Components installed:
-#   - AWS CLI 2
+#   - AWS CLI 2 with autocomplete
 #   - AWS Session Manager Plugin
+#   - AWS SAM CLI
 #
 # Configuration
 #   - ~/.config/bashrc.d/aws_completer.sh - AWS auto completion for Bash
