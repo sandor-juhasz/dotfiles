@@ -2,12 +2,11 @@
 
 source "${BASH_SOURCE%/*}/common.sh"
 
-VSCODE_EXTENSION="timonwong.shellcheck"
-
 function install() {
     sudo apt-get install -y shellcheck
 
-    install_vscode_extension "${VSCODE_EXTENSION}"
+    install_vscode_extension timonwong.shellcheck
+    install_vscode_extension rogalmic.bash-debug
 }
 
 function uninstall() {
@@ -15,7 +14,8 @@ function uninstall() {
 
     sudo apt-get remove -y shellcheck
 
-    uninstall_vscode_extension "${VSCODE_EXTENSION}"
+    uninstall_vscode_extension rogalmic.bash-debug
+    uninstall_vscode_extension timonwong.shellcheck
 }
 
 main $1
