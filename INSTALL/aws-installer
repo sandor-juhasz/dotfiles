@@ -6,11 +6,17 @@
 #   - AWS CLI 2 with autocomplete
 #   - AWS Session Manager Plugin
 #   - AWS SAM CLI
+#   - AWS Toolkit for VSCode
 #
 # Configuration
 #   - ~/.config/bashrc.d/aws_completer.sh - AWS auto completion for Bash
 #   - ~/.config/zshrc.d/aws_completer.sh  - AWS Auto completion for Zsh
 #   - ~/.ssh/config.d/aws.config          - Ability to SSH into EC2s with instance ID
+#
+# Dependencies
+#   - Docker (Either with Docker Desktop of Docker Engine)
+#   - curl, unzip
+#   - Visual Studio Code
 #
 ######################################################################################
 
@@ -106,11 +112,20 @@ function upgrade_aws_sam_cli() {
     rm /tmp/aws-sam-cli-linux-x86_64.zip
 }
 
+function install_aws_toolkit_for_vscode() {
+    install_vscode_extension amazonwebservices.aws-toolkit-vscode
+}
+
+function uninstall_aws_toolkit_for_vscode() {
+    uninstall_vscode_extension amazonwebservices.aws-toolkit-vscode
+}
+
 function install() {
     install_aws_cli
     install_aws_autocomplete
     install_aws_session_manager_plugin
     install_aws_sam_cli
+    install_aws_toolkit_for_vscode
 }
 
 function uninstall() {
@@ -118,6 +133,8 @@ function uninstall() {
     uninstall_aws_autocomplete
     uninstall_aws_session_manager_plugin
     uninstall_aws_sam_cli
+    uninstall_aws_toolkit_for_vscode
+
 }
 
 function upgrade() {
