@@ -4,6 +4,7 @@
 #
 # Components installed:
 #   - Jupyter
+#   - VSCode Jupyter extensions (to let VSCode use Jupyter kernels)
 #
 # Notes
 #   - The Jupyter packages and kernels are installed using pip --user in the user's
@@ -26,36 +27,25 @@ function upgrade_jupyter() {
     pip install -U jupyter
 }
 
-
-#
-# Bash kernel
-#
-function install_bash_kernel() {
-    pip install --user bash_kernel
-    python3 -m bash_kernel.install
+function install_jupyter_vscode_extension() {
+    install_vscode_extension ms-toolsai.jupyter
 }
 
-function upgrade_bash_kernel() {
-    pip install --user bash_kernel
-    python3 -m bash_kernel.install
+function uninstall_jupyter_vscode_extension() {
+    uninstall_vscode_extension ms-toolsai.jupyter
 }
-
-#
-# 
-#
 
 function install() {
     install_jupyter
-    install_bash_kernel
+    install_jupyter_vscode_extension
 }
 
 function uninstall() {
-    echo "Done"
+    uninstall_vscode_extension
 }
 
 function upgrade() {
     upgrade_jupyter
-    upgrade_bash_kernel
 }
 
 main $1

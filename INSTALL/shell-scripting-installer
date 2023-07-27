@@ -1,9 +1,43 @@
 #!/bin/bash
+######################################################################################
+# Installs tools for Bash shell script development
+#
+# Components installed:
+#   - Shellcheck with VSCode integration
+#   - Bash debugger for VSCode
+#   - Bash kernel for Jupyter
+#
+# Configuration
+#
+# Dependencies
+#   - Jupyter
+#   - Visual Studio Code
+#
+######################################################################################
 
 source "${BASH_SOURCE%/*}/common.sh"
 
+#
+# Bash kernel
+#
+function install_bash_kernel() {
+    pip install --user bash_kernel
+    python3 -m bash_kernel.install
+}
+
+function upgrade_bash_kernel() {
+    pip install --user bash_kernel
+    python3 -m bash_kernel.install
+}
+
+function uninstall_bash_kernel() {
+    pip uninstall --user bash_kernel
+}
+
 function install() {
     sudo apt-get install -y shellcheck
+
+    install_bash_kernel
 
     install_vscode_extension timonwong.shellcheck
     install_vscode_extension rogalmic.bash-debug
@@ -13,6 +47,8 @@ function uninstall() {
     echo "Uninstalling shellcheck..."
 
     sudo apt-get remove -y shellcheck
+
+    uninstall_bash_kernel
 
     uninstall_vscode_extension rogalmic.bash-debug
     uninstall_vscode_extension timonwong.shellcheck
