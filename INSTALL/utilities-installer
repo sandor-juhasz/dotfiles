@@ -115,6 +115,11 @@ function install() {
 
     echo "Installing BeautifulSoup4"
     python3 -m pip install --user beautifulsoup4
+
+    #
+    # PlantUML support
+    #
+    install_vscode_extension jebbs.plantuml
 }
 
 function uninstall() {
@@ -130,6 +135,8 @@ function uninstall() {
     fi
 
     uninstall_cookiecutter    
+
+    uninstall_vscode_extension jebbs.plantuml
 }
 
 main $1
