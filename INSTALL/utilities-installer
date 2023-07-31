@@ -37,6 +37,23 @@ function uninstall_cookiecutter() {
     rm -r ~/.virtualenvs/cookiecutter
 }
 
+
+#
+# Copied from https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+#
+function install_github_cli() {
+    type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+    && sudo apt update \
+    && sudo apt install gh -y
+}
+
+function uninstall_github_cli() {
+    echo "Done".
+}
+
 function install() {
     # Installation steps are added from https://www.terraform.io/downloads
 
@@ -120,6 +137,8 @@ function install() {
     # PlantUML support
     #
     install_vscode_extension jebbs.plantuml
+
+    install_github_cli
 }
 
 function uninstall() {
@@ -135,8 +154,10 @@ function uninstall() {
     fi
 
     uninstall_cookiecutter    
+    uninstall_github_cli
 
     uninstall_vscode_extension jebbs.plantuml
+
 }
 
 main $1
