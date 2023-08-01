@@ -21,20 +21,30 @@ function install_virtualenvwrapper() {
     pip3 install --use virtualenvwrapper
 }
 
+function install_pipx() {
+    pip3 install --user pipx
+}
+
+function uninstall_pipx() {
+    pip3 uninstall pipx
+}
+
 function install_cookiecutter() {
-    echo "Installing cookiecutter"
-    mkdir -p ~/.virtualenvs
-    python3 -m venv ~/.virtualenvs/cookiecutter
-    source ~/.virtualenvs/cookiecutter/bin/activate
-    pip install cookiecutter
-    deactivate
-    ln -s ~/.virtualenvs/cookiecutter/bin/cookiecutter ~/.local/bin/cookiecutter
+    pipx install cookiecutter
+    # echo "Installing cookiecutter"
+    # mkdir -p ~/.virtualenvs
+    # python3 -m venv ~/.virtualenvs/cookiecutter
+    # source ~/.virtualenvs/cookiecutter/bin/activate
+    # pip install cookiecutter
+    # deactivate
+    # ln -s ~/.virtualenvs/cookiecutter/bin/cookiecutter ~/.local/bin/cookiecutter
 }
 
 function uninstall_cookiecutter() {
-    echo "Uninstalling cookiecutter"
-    rm ~/.local/bin/cookiecutter
-    rm -r ~/.virtualenvs/cookiecutter
+    pipx uninstall cookiecutter
+    # echo "Uninstalling cookiecutter"
+    # rm ~/.local/bin/cookiecutter
+    # rm -r ~/.virtualenvs/cookiecutter
 }
 
 
@@ -117,6 +127,7 @@ function install() {
     wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O ~/.local/bin/yq && chmod +x ~/.local/bin/yq
 
     install_virtualenvwrapper
+    install_pipx
     install_cookiecutter
     
     mkdir -p ~/projects
@@ -129,9 +140,6 @@ function install() {
     curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
     echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
     sudo apt update && sudo apt install gum
-
-    echo "Installing BeautifulSoup4"
-    python3 -m pip install --user beautifulsoup4
 
     #
     # PlantUML support
@@ -154,10 +162,10 @@ function uninstall() {
     fi
 
     uninstall_cookiecutter    
+    uninstall_pipx
     uninstall_github_cli
 
     uninstall_vscode_extension jebbs.plantuml
-
 }
 
 main $1
