@@ -1,7 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+echo "$(date) ~/.zshrc is executed." >>/tmp/$(id -un).log
 
-# Path to your oh-my-zsh installation.
+#e Path to your oh-my-zsh installation.
 export ZSH="/home/${USER}/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
@@ -136,26 +137,40 @@ function source-envd {
 }
 source-envd
 
-function source-zshrcd {
-  setopt extended_glob
+# >>> ~/.config/zshrc.d support >>>
 
-  # glob search for the zshrc.d dir
-  local zshrcd=~/.config/zshrc.d
+if [[ -d ~/.config/zshrc.d ]]; then
+    for file in ~/.config/zshrc.d/*.sh; do
+        if [[ -r $file ]]; then
+            source "${file}"
+        fi
+    done
+    unset file
+fi
+
+# <<< ~/.config/zshrc.d support <<<
+
+
+# function source-zshrcd {
+#   setopt extended_glob
+
+#   # glob search for the zshrc.d dir
+#   local zshrcd=~/.config/zshrc.d
   
-  if [[ ! -d "$zshrcd" ]]; then
-    mkdir -p $zshrcd
-  fi
+#   if [[ ! -d "$zshrcd" ]]; then
+#     mkdir -p $zshrcd
+#   fi
 
-  # source files in zshrc.d in order
-  local conf_files=("$zshrcd"/*.sh(N))
-  local f
-  for f in ${(o)conf_files}; do
-    # ignore files that begin with a tilde
-    case ${f:t} in '~'*) continue;; esac
-    source "$f"
-  done
-}
-source-zshrcd
+#   # source files in zshrc.d in order
+#   local conf_files=("$zshrcd"/*.sh(N))
+#   local f
+#   for f in ${(o)conf_files}; do
+#     # ignore files that begin with a tilde
+#     case ${f:t} in '~'*) continue;; esac
+#     source "$f"
+#   done
+# }
+# source-zshrcd
 
 export PATH=$PATH:~/.local/bin
 
@@ -175,3 +190,20 @@ alias ls='exa -F --group-directories-first'
 alias tree='exa --tree --group-directories-first'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
+
+
+
+
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+path=('/home/developer/.juliaup/bin' $path)
+export PATH
+
+# <<< juliaup initialize <<<

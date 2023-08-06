@@ -1,7 +1,7 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-
+echo "$(date) ~/.bashrc is executed." >>/tmp/$(id -un).log
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -112,25 +112,18 @@ if ! shopt -oq posix; then
   fi
 fi
 
-#
-# Include *.sh files from ~/.config/env.d
-#
-if [[ ! -d ~/.config/env.d ]]; then
-    mkdir -p ~/.config/env.d
-fi
-for file in ~/.config/env.d/*.sh; do
-    source "${file}"
-done
+# >>> ~/.config/bashrc.d support >>>
 
-#
-# Include *.sh files from ~/.config/bashrc.d
-#
-if [[ ! -d ~/.config/bashrc.d ]]; then
-    mkdir -p ~/.config/bashrc.d
+if [[ -d ~/.config/bashrc.d ]]; then
+    for file in ~/.config/bashrc.d/*.sh; do
+        if [[ -r $file ]]; then
+            source "${file}"
+        fi
+    done
+    unset file
 fi
-for file in ~/.config/bashrc.d/*.sh; do
-    source "${file}"
-done
+
+# <<< ~/.config/bashrc.d support <<<
 
 export PATH=$PATH:~/.local/bin
 
@@ -144,3 +137,32 @@ alias ls='exa -F --group-directories-first'
 alias tree='exa --tree --group-directories-first'
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+
+
+
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+case ":$PATH:" in
+    *:/home/developer/.juliaup/bin:*)
+        ;;
+
+    *)
+        export PATH=/home/developer/.juliaup/bin${PATH:+:${PATH}}
+        ;;
+esac
+
+# <<< juliaup initialize <<<
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
+# Restart your shell for the changes to take effect.
+
+# Load pyenv-virtualenv automatically by adding
+# the following to ~/.bashrc:
+
+eval "$(pyenv virtualenv-init -)"
