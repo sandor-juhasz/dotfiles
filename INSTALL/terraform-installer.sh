@@ -11,7 +11,7 @@ function install() {
     sudo apt-get update   
     sudo apt-get -y install ca-certificates curl gnupg lsb-release
 
-    # Installing Docker's official GPG key
+    # Installing Terraforms's official GPG key
     sudo mkdir -p /etc/apt/keyrings
     curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/hashicorp-archive-keyring.gpg
 
