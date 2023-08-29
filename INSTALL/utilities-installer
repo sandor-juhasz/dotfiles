@@ -1,171 +1,65 @@
 #!/bin/bash
 #
-# This script installs all those general purpose applications that are needed
-# for everyday software development workflows. The applications range from 
-# command line utilities to GUI applications. 
+# This script installs all the general purpose applications that I use
+# for everyday workflows. They may not be related to software development.
+# The applications range from command line utilities to GUI applications. 
 # 
-# The only common in them is that they cannot be tied to any single development
-# platform but can be used by all of them.
+
+#
+# This script assumes that the following dependencies are already installed.
+# - curl and related packages
+# - Git tooling (Git credential manager, GitHub CLI)
+# - Python runtime environment including pyenv, pipx, etc.
+# - General purpose utilities: jq, yq
+#
+
+#
+# Things which shuld not be installed using this script
+# - Editor (emacs, vim, vscode)
+# - Project management utiltities (ep, crp, cdp, etc.)
 #
 
 source "${BASH_SOURCE%/*}/common.sh"
 
-PACKAGES="curl emacs exa git htop jq mc ncdu powerline stow tmux vim-gtk3 zsh python3-pip"
-
-#
-# Installs the VirtualenvWrapper to manage Python virtualenvs.
-# For details, please visit https://virtualenvwrapper.readthedocs.io/
-#
-function install_virtualenvwrapper() {
-    echo "Installing virtualenvwrapper"
-    pip3 install --use virtualenvwrapper
-}
-
-function install_pipx() {
-    pip3 install --user pipx
-}
-
-function uninstall_pipx() {
-    pip3 uninstall pipx
-}
-
-function install_cookiecutter() {
-    pipx install cookiecutter
-    # echo "Installing cookiecutter"
-    # mkdir -p ~/.virtualenvs
-    # python3 -m venv ~/.virtualenvs/cookiecutter
-    # source ~/.virtualenvs/cookiecutter/bin/activate
-    # pip install cookiecutter
-    # deactivate
-    # ln -s ~/.virtualenvs/cookiecutter/bin/cookiecutter ~/.local/bin/cookiecutter
-}
-
-function uninstall_cookiecutter() {
-    pipx uninstall cookiecutter
-    # echo "Uninstalling cookiecutter"
-    # rm ~/.local/bin/cookiecutter
-    # rm -r ~/.virtualenvs/cookiecutter
-}
-
-
-#
-# Copied from https://github.com/cli/cli/blob/trunk/docs/install_linux.md
-#
-function install_github_cli() {
-    type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
-    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
-    && sudo apt update \
-    && sudo apt install gh -y
-}
-
-function uninstall_github_cli() {
-    echo "Done".
-}
+PACKAGES="exa htop mc ncdu powerline stow tmux"
 
 function install() {
     # Installation steps are added from https://www.terraform.io/downloads
 
-    # Installing prerequisites
-    sudo apt -y install ca-certificates curl gnupg lsb-release
-    sudo apt update 
+    # Installing utilities
     sudo apt -y install ${PACKAGES}
-
-    echo "Installing and configuring Git Credential Manager Core..."
-    if is_wsl; then
-        git config --global credential.helper "/mnt/c/Program\\ Files/Git/mingw64/bin/git-credential-manager.exe"
-        git config --global credential.https://dev.azure.com.useHttpPath true
-    else
-        sudo apt -y install "dotnet-sdk-6.0"
-        mkdir -p ~/.config/bashrc.d
-        mkdir -p ~/.config/zshrc.d
-        echo 'export PATH=$PATH:$HOME/.dotnet/tools' >~/.config/zshrc.d/dotnet.sh
-        echo 'export PATH=$PATH:$HOME/.dotnet/tools' >~/.config/bashrc.d/dotnet.sh
-
-        dotnet tool install -g git-credential-manager
-        git-credential-manager configure
-        # Configure the git credential manager to use the freedesktop.org Secret Service API
-        git config --global credential.credentialStore secretservice
-    fi
 
     #
     # Configure Git
     #
     git config --global init.defaultBranch main
 
-    echo "Installing Visual Studio Code..."
-    if is_wsl; then
-        echo "VSCode should not be installed in the WSL distro. Skipping this step..."
-    else
-        echo "Not WSL distro, installing VSCode."
-        # Installing Microsoft's official GPG key
-        if [[ ! -e /etc/apt/keyrings/packages.microsoft.gpg ]]; then
-            sudo mkdir -p /etc/apt/keyrings
-            curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /etc/apt/keyrings/packages.microsoft.gpg
-        fi
-
-        # Setting up the repository
-        if [[ ! -e /etc/apt/sources.list.d/vscode.list ]]; then
-            echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
-        fi
-
-        sudo apt update
-        sudo apt -y install code
-    fi
-
-    echo "Setting up fzf..."
-    if ! which fzf; then
-        echo "Installing fzf from Github..."
-        git clone --depth 1 https://github.com/junegunn/fzf.git ~/.local/share/fzf
-        ~/.local/share/fzf/install
-    else
-        echo "fzf has already been installed, doing nothing."
-    fi
-
-    echo "Installing YQ"
-    wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O ~/.local/bin/yq && chmod +x ~/.local/bin/yq
-
-    install_virtualenvwrapper
-    install_pipx
-    install_cookiecutter
-    
-    mkdir -p ~/projects
-    if [ ! -d ~/projects/project-templates ]; then
-        git clone https://github.com/sandor-juhasz/project-templates.git ~/projects/project-templates
-    fi
-
-    echo "Installing Gum"
-    sudo mkdir -p /etc/apt/keyrings
-    curl -fsSL https://repo.charm.sh/apt/gpg.key | sudo gpg --dearmor -o /etc/apt/keyrings/charm.gpg
-    echo "deb [signed-by=/etc/apt/keyrings/charm.gpg] https://repo.charm.sh/apt/ * *" | sudo tee /etc/apt/sources.list.d/charm.list
-    sudo apt update && sudo apt install gum
+    #
+    # Install js-shell-lib with its dependencies.
+    #    
+    bash -c "$(curl -fsSL https://raw.githubusercontent.com/sandor-juhasz/js-shell-lib/main/install)"
 
     #
     # PlantUML support
     #
-    install_vscode_extension jebbs.plantuml
-
-    install_github_cli
+    # install_vscode_extension jebbs.plantuml
 }
 
-function uninstall() {
-    sudo apt -y remove ${PACKAGES}
+# function uninstall() {
+#     sudo apt -y remove ${PACKAGES}
 
-    if is_wsl; then
-        echo "VSCode should not be installed in the WSL distro. Doing nothing..."
-    else
-        sudo apt remove code
-        sudo rm /etc/apt/sources.list.d/vscode.list
-        sudo rm /etc/apt/keyrings/packages.microsoft.gpg
-        sudo apt update
-    fi
+#     if is_wsl; then
+#         echo "VSCode should not be installed in the WSL distro. Doing nothing..."
+#     else
+#         sudo apt remove code
+#         sudo rm /etc/apt/sources.list.d/vscode.list
+#         sudo rm /etc/apt/keyrings/packages.microsoft.gpg
+#         sudo apt update
+#     fi
 
-    uninstall_cookiecutter    
-    uninstall_pipx
-    uninstall_github_cli
+#     uninstall_cookiecutter    
 
-    uninstall_vscode_extension jebbs.plantuml
-}
+#     uninstall_vscode_extension jebbs.plantuml
+# }
 
 main $1

@@ -76,7 +76,7 @@ function install_openjdk() {
     echo "JDK ${version} has been successfully installed."
 }
 
-install_maven() {
+function install_maven() {
     echo "Installing Maven..."
     wget "${MAVEN_INSTALL_PACKAGE_URL}"
     tar -xvzf "${MAVEN_INSTALL_PACKAGE}"
@@ -87,9 +87,14 @@ install_maven() {
     popd || exit
 }
 
+function install_sdkman() {
+
+}
+
 function install() {
     pushd /tmp || exit
 
+    install_sdkman
     install_openjdk 20
     install_maven
     install_vscode_extension "${VSCODE_EXTENSION}"
