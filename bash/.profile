@@ -40,7 +40,6 @@ fi
 
 # >>> ~/.config/profile.d support >>>
 
-echo "Processing profile.d"
 if [ -d "$HOME/.config/profile.d" ]; then
   for i in "$HOME/.config/profile.d"/*.sh; do
     if [ -r "$i" ]; then
