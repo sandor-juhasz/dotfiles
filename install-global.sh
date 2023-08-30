@@ -15,5 +15,3 @@ git config user.name "sandor.juhasz"
 git config user.email "sandor.juhasz.1983@gmail.com"
 cd ..
 chgrp -R "${dotfile_author_group}" dotfiles
-
-

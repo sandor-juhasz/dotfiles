@@ -27,7 +27,8 @@ function install() {
     # Installation steps are added from https://www.terraform.io/downloads
 
     # Installing utilities
-    sudo apt -y install ${PACKAGES}
+    sudo apt-get update
+    sudo apt-get install -y ${PACKAGES}
 
     #
     # Configure Git
