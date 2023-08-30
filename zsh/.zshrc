@@ -1,3 +1,12 @@
+###############################################################################
+# ~/.zshrc
+#
+# Note: this file should be as close to the default configuration as possible.
+#       In its current form, it is a default Oh-my-zsh configuration file with
+#       the added feature of including all *.sh file from ~/.config/zshrc.d
+#
+###############################################################################
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 echo "$(date) ~/.zshrc is executed." >>/tmp/$(id -un).log
@@ -99,44 +108,6 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-#
-# Enabling AWS CLI Autocompletion
-#
-if [[ -e /usr/local/bin/aws_completer ]]; then
-    autoload bashcompinit && bashcompinit
-    complete -C '/usr/local/bin/aws_completer' aws
-fi
-
-#
-# Disabling AWS CLI pager
-#
-AWS_PAGER=""
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-function source-envd {
-  setopt extended_glob
-
-  # glob search for the zshrc.d dir
-  local envd=~/.config/env.d
-  
-  if [[ ! -d "$envd" ]]; then
-    mkdir -p $envd
-  fi
-
-  # source files in zshrc.d in order
-  local conf_files=("$envd"/*.sh(N))
-  local f
-  for f in ${(o)conf_files}; do
-    # ignore files that begin with a tilde
-    case ${f:t} in '~'*) continue;; esac
-    source "$f"
-  done
-}
-source-envd
-
 # >>> ~/.config/zshrc.d support >>>
 
 if [[ -d ~/.config/zshrc.d ]]; then
@@ -149,61 +120,3 @@ if [[ -d ~/.config/zshrc.d ]]; then
 fi
 
 # <<< ~/.config/zshrc.d support <<<
-
-
-# function source-zshrcd {
-#   setopt extended_glob
-
-#   # glob search for the zshrc.d dir
-#   local zshrcd=~/.config/zshrc.d
-  
-#   if [[ ! -d "$zshrcd" ]]; then
-#     mkdir -p $zshrcd
-#   fi
-
-#   # source files in zshrc.d in order
-#   local conf_files=("$zshrcd"/*.sh(N))
-#   local f
-#   for f in ${(o)conf_files}; do
-#     # ignore files that begin with a tilde
-#     case ${f:t} in '~'*) continue;; esac
-#     source "$f"
-#   done
-# }
-# source-zshrcd
-
-export PATH=$PATH:~/.local/bin
-
-#
-# Aliases
-#
-# ls aliases
-# - Use exa in place of ls.
-# - Display directories first.
-# - Add file type suffixes for clarity.
-#
-alias ll='exa -alF --group-directories-first'
-alias la='exa -aF --group-directories-first'
-alias l='exa -F --group-directories-first'
-alias ls='exa -F --group-directories-first'
-
-alias tree='exa --tree --group-directories-first'
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-
-# Load Angular CLI autocompletion.
-source <(ng completion script)
-
-
-
-
-
-# >>> juliaup initialize >>>
-
-# !! Contents within this block are managed by juliaup !!
-
-path=('/home/developer/.juliaup/bin' $path)
-export PATH
-
-# <<< juliaup initialize <<<

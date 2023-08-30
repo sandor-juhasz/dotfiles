@@ -3,6 +3,14 @@
 # Installs the dotfiles using stow
 ################################################################################
 
+function archive_if_exists() {
+    local filename=$1
+
+    if [[ -e "$filename" ]] && [[ ! -L "$filename" ]]; then
+        mv "$filename" "$filename.old"
+    fi
+}
+
 echo "Installing utilities"
 ./INSTALL/utilities-installer install
 
@@ -19,9 +27,10 @@ cd ..
 
 echo "Installing dotfiles with Stow..."
 
-if [[ ! -L ~/.bashrc ]]; then
-    mv ~/.bashrc ~/.bashrc.old
-fi
+archive_if_exists ~/.bashrc
+archive_if_exists ~/.zshrc
+archive_if_exists ~/.zprofile
+archive_if_exists ~/.profile
 
 ./refresh-stow.sh
 

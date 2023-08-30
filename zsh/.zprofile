@@ -20,14 +20,4 @@ if [[ -d ~/.config/profile.d ]]; then
     unset file
 fi
 
-# Legacy env.d directory. Please remove once refactored.
-if [[ -d ~/.config/env.d ]]; then
-    for file in ~/.config/env.d/*.sh; do
-        if [[ -r $file ]]; then
-            source "${file}"
-        fi
-    done
-    unset file
-fi
-
 # <<< ~/.config/profile.d support <<<

@@ -6,3 +6,5 @@ In this file I collect ideas, tasks and improvement ideas for the Dotfiles proje
 - Easy AWS Profile selector
 - Prompt indicates current AWS profile
 - alias to log into AWS.
+- Rename files in ~/.config/zshrc.d, use a zsh-specific extension.
+

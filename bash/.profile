@@ -1,4 +1,15 @@
 # shellcheck shell=sh
+###############################################################################
+# ~/.profile  This file is read by Bash and Sh.
+#
+# Note: This file is not read by Zsh. All settings need to be replicated in 
+#       ~/.zprofile.
+#
+# Note: this file should be as close to the default configuration as possible.
+#       In its current form, it is a default .profile configuration file with
+#       the added feature of including all *.sh file from ~/.config/profile.d
+#
+###############################################################################
 # ~/.profile: executed by the command interpreter for login shells.
 # This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
 # exists.
@@ -32,17 +43,6 @@ fi
 echo "Processing profile.d"
 if [ -d "$HOME/.config/profile.d" ]; then
   for i in "$HOME/.config/profile.d"/*.sh; do
-    if [ -r "$i" ]; then
-      . "$i"
-    fi
-  done
-  unset i
-fi
-
-echo "Processing env.d"
-# for compatibility with old Dotfiles INSTALL scripts
-if [ -d "$HOME/.config/env.d" ]; then
-  for i in "$HOME/.config/env.d"/*.sh; do
     if [ -r "$i" ]; then
       . "$i"
     fi
