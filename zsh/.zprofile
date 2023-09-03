@@ -5,7 +5,6 @@
 ###############################################################################
 
 if [[ -d ~/.local/bin ]]; then
-    echo "Adding .local/bin to the path"
     export PATH=~/.local/bin:$PATH
 fi
 
