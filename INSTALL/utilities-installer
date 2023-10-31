@@ -31,10 +31,16 @@ function install() {
     sudo apt-get install -y ${PACKAGES}
 
     #
-    # Configure Git
+    # Configure Git if not running in a Dev Container.
+    # Note: Visual Studio Code's dev container implementation will copy the
+    #       host's ~/.gitconfig to the container if there is no existing file
+    #       on the container. The command below would create one, leading to
+    #       the container not inheriting the parent credentials and settings. 
     #
-    git config --global init.defaultBranch main
-
+    if [[ "$REMOTE_CONTAINERS" != "true" ]]; then
+        git config --global init.defaultBranch main
+    fi
+    
     #
     # Install js-shell-lib with its dependencies.
     #    
