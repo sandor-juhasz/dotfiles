@@ -47,6 +47,12 @@ function install() {
     bash -c "$(curl -fsSL https://raw.githubusercontent.com/sandor-juhasz/js-shell-lib/main/install)"
 
     #
+    # Install Starship
+    #
+    curl -sS https://starship.rs/install.sh | sh -s -- --bin-dir ~/.local/bin --yes
+
+
+    #
     # PlantUML support
     #
     # install_vscode_extension jebbs.plantuml
