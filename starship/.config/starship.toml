@@ -43,5 +43,8 @@ disabled = true
 [kubernetes]
 symbol = "󱃾"
 disabled = false
-format = '[$symbol$context(:$namespace)]($style)'
+format = '[$context(:$namespace)]($style)'
 style = "bg:blue fg:black"
+
+[kubernetes.context_aliases]
+'docker-desktop' = "🐳"
