@@ -10,10 +10,9 @@ $container\
 $kubernetes\
 [](bg:yellow fg:blue)\
 $aws\
-[](bg:green fg:yellow)\
-$git_branch$git_state$git_status\
-[](bg:none fg:green)
-$all
+[](bg:none fg:yellow) $all\
+([](fg:purple bg:none)${custom.gitdir}[ ](bg:green fg:purple)$git_branch$git_state$git_status[](bg:none fg:green) )\
+$directory $character
 """
 
 [aws]
@@ -29,6 +28,11 @@ symbol = "🐳"
 style = ""
 format = '[$symbol]($style) '
 disabled = false
+
+[directory]
+truncation_length = 0
+repo_root_style = "fg:blue"
+repo_root_format = '[$path]($style)[$read_only]($read_only_style)'
 
 [git_branch]
 format='[$symbol$branch(:$remote_branch)]($style)'
@@ -52,3 +56,10 @@ style = "bg:blue fg:black"
 
 [kubernetes.context_aliases]
 'docker-desktop' = "🐳"
+
+[custom.gitdir]
+command = 'basename $(git rev-parse --show-toplevel)'
+require_repo = true
+when = true
+format = '[$output]($style)'
+style = "bg:purple fg:black"
