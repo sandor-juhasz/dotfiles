@@ -4,10 +4,32 @@
 # Inserts a blank line between shell prompts
 add_newline = true
 
+format="""
+$container\
+[](fg:blue bg:black)\
+$kubernetes\
+[](bg:yellow fg:blue)\
+$aws\
+[](bg:black fg:yellow)\
+$all
+"""
+
 # Replace the '❯' symbol in the prompt with '➜'
 [character] # The name of the module we are configuring is 'character'
 success_symbol = '[➜](bold green)' # The 'success_symbol' segment is being set to '➜' with the color 'bold green'
 
+[container]
+symbol = "🐳"
+style = ""
+format = '[$symbol]($style) '
+disabled = false
+
 # Disable the package module, hiding it from the prompt completely
 [package]
 disabled = true
+
+[kubernetes]
+symbol = "󱃾"
+disabled = false
+format = '[$symbol$context( \($namespace\))]($style)'
+style = "bg:blue fg:black"
