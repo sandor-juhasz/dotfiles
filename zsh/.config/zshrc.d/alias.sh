@@ -51,3 +51,13 @@ alias al='aws sso login'
 #
 
 alias b='$BROWSER'
+
+#
+# Git
+#
+alias g='git'
+
+#
+# Kubernetes
+#
+alias k='kubectl'
