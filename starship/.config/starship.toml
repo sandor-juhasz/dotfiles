@@ -6,13 +6,13 @@ add_newline = true
 
 format="""
 $container\
-[](fg:blue bg:black)\
+[](fg:blue bg:none)\
 $kubernetes\
 [](bg:yellow fg:blue)\
 $aws\
 [](bg:green fg:yellow)\
 $git_branch$git_state$git_status\
-[](bg:black fg:green)
+[](bg:none fg:green)
 $all
 """
 
