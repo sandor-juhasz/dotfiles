@@ -31,5 +31,5 @@ disabled = true
 [kubernetes]
 symbol = "󱃾"
 disabled = false
-format = '[$symbol$context( \($namespace\))]($style)'
+format = '[$symbol$context(:$namespace)]($style)'
 style = "bg:blue fg:black"
