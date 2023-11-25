@@ -81,9 +81,19 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git tmux)
+plugins=(
+    git
+    kube-ps1
+    tmux
+)
 
 source $ZSH/oh-my-zsh.sh
+
+KUBE_PS1_PREFIX=""
+KUBE_PS1_SEPARATOR=" "
+KUBE_PS1_SUFFIX=""
+
+PROMPT='$(kube_ps1)'$PROMPT
 
 # User configuration
 
