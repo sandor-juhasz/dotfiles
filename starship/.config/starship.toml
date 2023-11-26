@@ -1,3 +1,5 @@
+# Emoji DB: https://emojidb.org/
+
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
@@ -13,7 +15,7 @@ $aws\
 [](bg:none fg:yellow) $all\
 ([](fg:purple bg:none)${custom.gitdir}\
 ${golang}${java}${julia}${python}${rust}${terraform}\
-[ ](bg:green fg:purple)$git_branch$git_state$git_status[](bg:none fg:green))\
+[](bg:green fg:purple)${custom.gituseroverride}$git_branch$git_state$git_status[](bg:none fg:green))\
 $directory$character
 """
 
@@ -91,9 +93,17 @@ format = '[$symbol]($style)'
 symbol =" 󱁢"
 style = "bg:purple fg:#0000FF"
 
+[custom.gituseroverride]
+command = '(git config --local --get user.name >/dev/null || git config --local --get user.email >/dev/null) && echo "👓"'
+description = "Shows a glasses icon if the repo has local username and email overrides"
+format = '[$output ]($style)'
+require_repo = true
+when = true
+style = "bg:green fg:black"
 
 [custom.gitdir]
 command = 'basename $(git rev-parse --show-toplevel)'
+description = 'The root project directory name of a Git repo.'
 require_repo = true
 when = true
 format = '[$output]($style)'
