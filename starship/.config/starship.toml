@@ -11,8 +11,10 @@ $kubernetes\
 [](bg:yellow fg:blue)\
 $aws\
 [](bg:none fg:yellow) $all\
-([](fg:purple bg:none)${custom.gitdir}[ ](bg:green fg:purple)$git_branch$git_state$git_status[](bg:none fg:green) )\
-$directory $character
+([](fg:purple bg:none)${custom.gitdir}\
+${golang}${java}${julia}${python}${rust}${terraform}\
+[ ](bg:green fg:purple)$git_branch$git_state$git_status[](bg:none fg:green))\
+$directory$character
 """
 
 [aws]
@@ -44,9 +46,21 @@ style = "bg:green fg:black"
 [git_status]
 style = "bg:green fg:black"
 format = '([\[$all_status$ahead_behind\]]($style))'
-# Disable the package module, hiding it from the prompt completely
-[package]
-disabled = true
+
+[golang]
+format = '[$symbol($version )]($style)'
+symbol = " 🐹"
+style = "bg:purple fg:black"
+
+[java]
+format = '[$symbol]($style)'
+symbol =" ☕"
+style = "bg:purple fg:black"
+
+[julia]
+format = '[$symbol]($style)'
+symbol =" ஃ"
+style = "bg:purple fg:black"
 
 [kubernetes]
 symbol = "󱃾"
@@ -56,6 +70,27 @@ style = "bg:blue fg:black"
 
 [kubernetes.context_aliases]
 'docker-desktop' = "🐳"
+
+# Disable the package module, hiding it from the prompt completely
+[package]
+disabled = true
+
+[python]
+symbol =" 🐍"
+disabled = false
+format = '[$symbol]($style)'
+style = "bg:purple fg:black"
+
+[rust]
+format = '[$symbol]($style)'
+symbol =" 🦀"
+style = "bg:purple fg:black"
+
+[terraform]
+format = '[$symbol]($style)'
+symbol =" 󱁢"
+style = "bg:purple fg:#0000FF"
+
 
 [custom.gitdir]
 command = 'basename $(git rev-parse --show-toplevel)'
