@@ -23,7 +23,7 @@ alias edir='code .'
 # Edit the specified file
 alias e='$EDITOR'
 
-alias cdp='cd $PROJECTS_HOME/$(find $PROJECTS_HOME/* -prune -type d -printf "%f\n" | fzf --tac --border=rounded --border-label="Change current directory to project")'
+alias cdp='cd $(select-project "Change current directory to project")'
 alias ep=edit-project
 alias crp=create-project
 
