@@ -1,0 +1,50 @@
+#!/bin/bash
+###############################################################################
+# Checks if the host is connected to VPN. If a VPN connection is active, it
+# displays the name of the connection.
+#
+# Note: This script works on WSL only.
+#  
+# Usage:
+# 1. Have a scheduled task on Windows to dump the VPN settings into a file 
+#    on the Windows filesystem. The Windows PowerShell command to query the
+#    VPN info is:
+#
+#    Get-VpnConnection -AllUserConnection |  ConvertTo-Json >c:\temp\vpn.state   
+#
+# 2. Set the following environment variables
+#    - STARSHIP_VPN_CONNECTION_STATUS=enabled
+#    - STARSHIP_VPN_CONNECTION_STATUS_CACHE=<The file storing the VPN data>
+#
+###############################################################################
+
+function is_wsl() {
+    grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null
+}
+
+function get_status_of_connection() {
+    powershell.exe -Command "(Get-VpnConnection -Name \"$2\" -AllUserConnection).ConnectionStatus" | dos2unix
+}
+
+if [[ -z $STARSHIP_VPN_CONNECTION_STATUS ]]; then
+    exit
+fi
+
+if ! is_wsl; then
+    echo "🔑N/A"
+    exit
+fi
+
+if ! [[ -r "${STARSHIP_VPN_CONNECTION_STATUS_CACHE}" ]]; then
+    echo "🔑Error reading file"
+    exit
+fi
+
+connection_name=$(cat "${STARSHIP_VPN_CONNECTION_STATUS_CACHE}" | dos2unix | jq -r '.[] | select(.ConnectionStatus=="Connected").Name')
+if [[ $? != 0 ]]; then 
+    echo "🔑Error parsing file"
+elif [[ -z "$connection_name" ]]; then
+      echo "🔑❌ "
+else 
+      echo "🔑✔️ $connection_name"
+fi

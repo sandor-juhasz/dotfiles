@@ -8,7 +8,9 @@ add_newline = true
 
 format="""
 $container\
-[](fg:blue bg:none)\
+[](fg:green bg:none)\
+${custom.vpn}\
+[](bg:blue fg:green)\
 $kubernetes\
 [](bg:yellow fg:blue)\
 $aws\
@@ -108,3 +110,11 @@ require_repo = true
 when = true
 format = '[$output]($style)'
 style = "bg:purple fg:black"
+
+[custom.vpn]
+command = 'is-vpn-connected'
+description = 'Shows if VPN is connected'
+when = "test -n $STARSHIP_VPN_CONNECTION_STATUS"
+format = '[$output]($style)'
+style = "bg:green fg:black"
+ignore_timeout = true
