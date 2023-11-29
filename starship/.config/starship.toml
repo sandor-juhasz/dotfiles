@@ -22,8 +22,9 @@ $directory$character
 """
 
 [aws]
-format = '[($profile)(:$region)(\[$duration\])]($style)'
+format = '[($symbol$profile)(:$region)(\[$duration\])]($style)'
 style = "bg:yellow fg:black"
+symbol = " "
 
 # Replace the '❯' symbol in the prompt with '➜'
 [character] # The name of the module we are configuring is 'character'
@@ -53,12 +54,12 @@ format = '([\[$all_status$ahead_behind\]]($style))'
 
 [golang]
 format = '[$symbol($version )]($style)'
-symbol = " 🐹"
+symbol = " 󰟓 "
 style = "bg:purple fg:black"
 
 [java]
 format = '[$symbol]($style)'
-symbol =" ☕"
+symbol =" "
 style = "bg:purple fg:black"
 
 [julia]
@@ -67,9 +68,9 @@ symbol =" ஃ"
 style = "bg:purple fg:black"
 
 [kubernetes]
-symbol = "󱃾"
+symbol = "󱃾 "
 disabled = false
-format = '[$context(:$namespace)]($style)'
+format = '[$symbol$context(:$namespace)]($style)'
 style = "bg:blue fg:black"
 
 [kubernetes.context_aliases]
@@ -80,19 +81,19 @@ style = "bg:blue fg:black"
 disabled = true
 
 [python]
-symbol =" 🐍"
+symbol ="  "
 disabled = false
 format = '[$symbol]($style)'
 style = "bg:purple fg:black"
 
 [rust]
 format = '[$symbol]($style)'
-symbol =" 🦀"
+symbol =" 󱘗 "
 style = "bg:purple fg:black"
 
 [terraform]
 format = '[$symbol]($style)'
-symbol =" 󱁢"
+symbol =" 󱁢 "
 style = "bg:purple fg:#0000FF"
 
 [custom.gituseroverride]
