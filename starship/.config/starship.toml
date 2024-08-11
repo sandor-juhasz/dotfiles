@@ -7,6 +7,7 @@
 add_newline = true
 
 format="""
+${custom.wsl}\
 $container\
 [](fg:green bg:none)\
 ${custom.vpn}\
@@ -72,9 +73,9 @@ symbol = "󱃾 "
 disabled = false
 format = '[$symbol$context(:$namespace)]($style)'
 style = "bg:blue fg:black"
-
-[kubernetes.context_aliases]
-'docker-desktop' = "🐳"
+contexts = [
+  { context_pattern = "docker-desktop", context_alias = "🐳" }
+]
 
 # Disable the package module, hiding it from the prompt completely
 [package]
@@ -119,3 +120,10 @@ when = "test -n $STARSHIP_VPN_CONNECTION_STATUS"
 format = '[$output]($style)'
 style = "bg:green fg:black"
 ignore_timeout = true
+
+[custom.wsl]
+command = 'echo " $WSL_DISTRO_NAME"'
+description = "Shows the WSL distro name"
+when = "test -n $WSL_DISTRO_NAME"
+format = '[$output ]($style)'
+style = "bg:none fg:white"
