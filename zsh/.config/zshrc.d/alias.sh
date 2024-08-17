@@ -25,6 +25,7 @@ alias e='$EDITOR'
 
 alias cdp='cd $(select-project "Change current directory to project")'
 alias ep=edit-project
+alias epnc=edit-project --no-devcontainer
 alias crp=create-project
 
 #
