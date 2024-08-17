@@ -1,0 +1,40 @@
+#!/bin/bash
+###############################################################################
+#
+# Open SnowSight in the default browser using connections from connections.toml
+#
+###############################################################################
+
+if ! which snow >>/dev/null; then
+    echo "Error: Cannot find Snowflake CLI."
+    exit 1
+fi
+if ! which jq >>/dev/null; then
+    echo "Error: Cannot find jq."
+    exit 1
+fi
+if ! which fzf >>/dev/null; then
+    echo "Error: Cannot find jq."
+    exit 1
+fi
+
+
+connections=$(snow connection list --format JSON)
+
+connection=$(echo $connections | jq -r '.[].connection_name' | fzf --height 10 --border=rounded --border-label="Open Snowsight with account")
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+echo "Connection selected: $connection"
+
+account=$(echo $connections | jq -r ".[] | select (.connection_name==\"$connection\") | .parameters.account")
+echo "Account selected: $account"
+if [[ -z "${account}" ]]; then
+    echo "Error: account is empty for connection $connection."
+    exit 1
+fi
+
+url="https://$account.snowflakecomputing.com/console/login#/"
+echo "URL: $url"
+
+"$BROWSER" "${url}"
