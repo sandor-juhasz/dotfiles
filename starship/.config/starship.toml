@@ -10,7 +10,6 @@ format="""
 ${custom.wsl}\
 $container\
 [](fg:green bg:none)\
-${custom.vpn}\
 [](bg:blue fg:green)\
 $kubernetes\
 [](bg:yellow fg:blue)\
