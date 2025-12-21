@@ -1,0 +1,67 @@
+#!/bin/bash
+
+function test_docker() {
+    TITLE="Checking Docker..."
+    STATUS="Failed"
+    if ! which docker >/dev/null 2>&1; then
+       ERR_MESSAGE="Docker executable is not found."
+       return
+    fi
+
+    if ! docker version >/dev/null 2>&1; then
+        ERR_MESSAGE="Docker version returned with error."
+        return
+    fi
+    STATUS="Ok"
+}
+
+function test_vscode() {
+    TITLE="Checking VSCode..."
+    STATUS="Failed"
+    if ! which code >/dev/null 2>&1; then
+       ERR_MESSAGE="VS Code executable is not found."
+       return
+    fi
+
+    if ! code --version >/dev/null 2>&1; then
+        ERR_MESSAGE="VSC Code version check returned with error."
+        return
+    fi
+    STATUS="Ok"
+    
+}
+
+function test_git() {
+    TITLE="Checking Git..."
+    STATUS="Failed"
+    if ! which git >/dev/null 2>&1; then
+       ERR_MESSAGE="Git executable is not found."
+       return
+    fi
+
+    if ! git config --list | grep "user.email" >/dev/null 2>&1; then
+        ERR_MESSAGE="Git global user email is not configured."
+        return
+    fi
+    if ! git config --list | grep "user.name" >/dev/null 2>&1; then
+        ERR_MESSAGE="Git global user name is not configured."
+        return
+    fi
+    STATUS="Ok"
+}
+
+function print_results() {
+    echo "$TITLE [ $STATUS ]"
+    if [[ $STATUS == "Failed" ]]; then
+        echo "    $ERR_MESSAGE"        
+    fi
+}
+
+echo "Self-test"
+test_docker
+print_results
+test_vscode
+print_results
+test_git
+print_results
+
