@@ -21,7 +21,7 @@
 
 source "${BASH_SOURCE%/*}/common.sh"
 
-PACKAGES="exa htop mc ncdu powerline stow tmux"
+PACKAGES="exa htop mc ncdu powerline stow tmux jq"
 
 function install() {
     # Installation steps are added from https://www.terraform.io/downloads
